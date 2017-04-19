@@ -74,11 +74,10 @@
 			isa = PBXGroup;
 			children = (
 				954700A41EA6DA0C00F6B5CD /* AppDelegate.swift */,
+				954700C81EA7A82100F6B5CD /* Model */,
 				954700A61EA6DA0C00F6B5CD /* HomeViewController.swift */,
 				954700C41EA7A2E600F6B5CD /* SignUpViewController.swift */,
 				954700C21EA7998900F6B5CD /* SignInViewController.swift */,
-				954700BC1EA6F5B800F6B5CD /* User.swift */,
-				954700C01EA6F8E300F6B5CD /* Location.swift */,
 				954700A81EA6DA0C00F6B5CD /* Main.storyboard */,
 				954700BA1EA6EECD00F6B5CD /* SignInButton.swift */,
 				954700AB1EA6DA0C00F6B5CD /* Assets.xcassets */,
@@ -87,6 +86,15 @@
 				954700B01EA6DA0C00F6B5CD /* Info.plist */,
 			);
 			path = SocialMap;
+			sourceTree = "<group>";
+		};
+		954700C81EA7A82100F6B5CD /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				954700BC1EA6F5B800F6B5CD /* User.swift */,
+				954700C01EA6F8E300F6B5CD /* Location.swift */,
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 		D5C850D755922468C127BA20 /* Frameworks */ = {

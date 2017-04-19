@@ -25,24 +25,28 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
         case "signInSegue":
             
             // Create the sign in window as a popover, anchored to the signInButton
-            let vc = segue.destination
+            let vc = segue.destination as! SignInViewController
+            vc.preferredContentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height / 2)
             let controller = vc.popoverPresentationController
             let anchor = controller!.sourceView
             
             if controller != nil {
                 controller?.delegate = self
                 controller?.sourceRect = anchor!.bounds
+                controller?.canOverlapSourceViewRect = true
             }
         case "signUpSegue":
             
             // Create the sign up window as a popover, anchored to the signInButton
-            let vc = segue.destination
+            let vc = segue.destination as! SignUpViewController
+            vc.preferredContentSize = CGSize(width: self.view.frame.width, height: 350)
             let controller = vc.popoverPresentationController
             let anchor = controller!.sourceView
             
             if controller != nil {
                 controller?.delegate = self
                 controller?.sourceRect = anchor!.bounds
+                controller?.canOverlapSourceViewRect = true
             }
         default:
             preconditionFailure("Segue Identifier not found")
