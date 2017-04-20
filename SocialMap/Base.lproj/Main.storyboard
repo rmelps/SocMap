@@ -74,6 +74,10 @@
                             </constraint>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="signInButton" destination="80A-Pd-BYI" id="K20-pm-szv"/>
+                        <outlet property="signUpButton" destination="Kyu-kv-5va" id="t07-a1-Fy3"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
@@ -104,7 +108,7 @@
                                         <rect key="frame" x="0.0" y="30.5" width="343" height="30"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits" keyboardType="emailAddress"/>
+                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" returnKeyType="done"/>
                                     </textField>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="752" text="Create Password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u67-hg-Xn9">
                                         <rect key="frame" x="0.0" y="70.5" width="343" height="20.5"/>
@@ -116,7 +120,7 @@
                                         <rect key="frame" x="0.0" y="101" width="343" height="30"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits" spellCheckingType="no" returnKeyType="done" secureTextEntry="YES"/>
+                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="done" secureTextEntry="YES"/>
                                     </textField>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="748" text="Confirm Password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4YM-On-zl2">
                                         <rect key="frame" x="0.0" y="141" width="343" height="20.5"/>
@@ -128,7 +132,7 @@
                                         <rect key="frame" x="0.0" y="171.5" width="343" height="30"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits" spellCheckingType="no" returnKeyType="done" secureTextEntry="YES"/>
+                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="done" secureTextEntry="YES"/>
                                     </textField>
                                 </subviews>
                                 <constraints>
@@ -217,9 +221,6 @@
                             <constraint firstItem="qOu-Mp-jnq" firstAttribute="centerX" secondItem="XTh-dk-Ka6" secondAttribute="centerX" id="fNK-8d-4R4"/>
                         </constraints>
                     </view>
-                    <connections>
-                        <segue destination="duR-Zr-U1j" kind="show" identifier="newLogInSegue" id="tgV-OQ-2SZ"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gCu-bc-bdD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -250,7 +251,7 @@
                                         <rect key="frame" x="0.0" y="30.5" width="343" height="30"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits" keyboardType="emailAddress" returnKeyType="done"/>
+                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" returnKeyType="done"/>
                                     </textField>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="752" text="Password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lis-JO-ihP">
                                         <rect key="frame" x="0.0" y="70.5" width="343" height="20.5"/>
@@ -262,7 +263,7 @@
                                         <rect key="frame" x="0.0" y="101" width="343" height="30"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="done" secureTextEntry="YES"/>
+                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="done" secureTextEntry="YES"/>
                                     </textField>
                                 </subviews>
                             </stackView>
@@ -308,7 +309,6 @@
                         <outlet property="emailField" destination="nfG-lf-Zk7" id="Uci-ng-Rhm"/>
                         <outlet property="errorCode" destination="ijd-RN-pis" id="bCE-wY-zTB"/>
                         <outlet property="passwordField" destination="4cV-Fh-dJr" id="AdG-LL-hOX"/>
-                        <segue destination="duR-Zr-U1j" kind="show" identifier="existingLogInSegue" id="yQU-kV-WW4"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="S0n-1z-0Pk" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -320,38 +320,5 @@
             </objects>
             <point key="canvasLocation" x="892" y="-655"/>
         </scene>
-        <!--View Controller-->
-        <scene sceneID="9fp-8y-TL1">
-            <objects>
-                <viewController id="duR-Zr-U1j" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="4nK-FT-GAK"/>
-                        <viewControllerLayoutGuide type="bottom" id="sGe-XI-AkO"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="pnh-Qv-gwn">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Successfully Signed In" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lhy-D3-Bqz">
-                                <rect key="frame" x="101" y="323" width="172" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="lhy-D3-Bqz" firstAttribute="centerX" secondItem="pnh-Qv-gwn" secondAttribute="centerX" id="X0O-xC-Wwq"/>
-                            <constraint firstItem="lhy-D3-Bqz" firstAttribute="centerY" secondItem="pnh-Qv-gwn" secondAttribute="centerY" id="euT-m1-CYV"/>
-                        </constraints>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="0Jp-y1-R1F" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="892" y="78"/>
-        </scene>
     </scenes>
-    <inferredMetricsTieBreakers>
-        <segue reference="tgV-OQ-2SZ"/>
-    </inferredMetricsTieBreakers>
 </document>

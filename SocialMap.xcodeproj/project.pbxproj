@@ -74,12 +74,12 @@
 			isa = PBXGroup;
 			children = (
 				954700A41EA6DA0C00F6B5CD /* AppDelegate.swift */,
+				954700CB1EA8030200F6B5CD /* Customized Elements */,
 				954700C81EA7A82100F6B5CD /* Model */,
 				954700A61EA6DA0C00F6B5CD /* HomeViewController.swift */,
 				954700C41EA7A2E600F6B5CD /* SignUpViewController.swift */,
 				954700C21EA7998900F6B5CD /* SignInViewController.swift */,
 				954700A81EA6DA0C00F6B5CD /* Main.storyboard */,
-				954700BA1EA6EECD00F6B5CD /* SignInButton.swift */,
 				954700AB1EA6DA0C00F6B5CD /* Assets.xcassets */,
 				954700AD1EA6DA0C00F6B5CD /* LaunchScreen.storyboard */,
 				954700B61EA6DBC000F6B5CD /* GoogleService-Info.plist */,
@@ -95,6 +95,14 @@
 				954700C01EA6F8E300F6B5CD /* Location.swift */,
 			);
 			name = Model;
+			sourceTree = "<group>";
+		};
+		954700CB1EA8030200F6B5CD /* Customized Elements */ = {
+			isa = PBXGroup;
+			children = (
+				954700BA1EA6EECD00F6B5CD /* SignInButton.swift */,
+			);
+			name = "Customized Elements";
 			sourceTree = "<group>";
 		};
 		D5C850D755922468C127BA20 /* Frameworks */ = {

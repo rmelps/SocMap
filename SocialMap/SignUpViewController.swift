@@ -16,6 +16,8 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var passwordConfirmField: UITextField!
     @IBOutlet weak var errorCode: UILabel!
     @IBOutlet weak var signUpStackView: UIStackView!
+    var signInButton: SignInButton!
+    var signUpButton: SignInButton!
     
     
     override func viewDidLoad() {
@@ -45,7 +47,15 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
                 if error == nil {
                     print(user?.email ?? "email address not created")
                     self.errorCode.isHidden = true
-                    self.performSegue(withIdentifier: "customizeSignUpSegue", sender: self)
+                    self.signUpButton.isEnabled = false
+                    self.signInButton.isEnabled = false
+                    self.dismiss(animated: true, completion: {
+                        UIView.animate(withDuration: 0.5, animations: {
+                            self.signInButton.alpha = 0
+                            self.signUpButton.alpha = 0
+                        })
+                        
+                    })
                 } else {
                     print(error?.localizedDescription ?? "error description not found")
                     self.errorCode.text = error?.localizedDescription
