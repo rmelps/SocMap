@@ -1,25 +1,31 @@
 //
-//  Location.swift
+//  Broadcast.swift
 //  SocialMap
 //
 //  Created by Richard Melpignano on 4/18/17.
 //  Copyright © 2017 J2MFD. All rights reserved.
 //
 
-import Foundation
+import UIKit
 import FirebaseDatabase
 
-struct Location {
+struct Broadcast {
     let key: String!
     let content: String!
     let addedByUser: String!
     let itemRef: FIRDatabaseReference?
+    /*
+    let photo: UIPhoto?
+ */
     
-    init(content: String, addedByUser: String, key:String = "") {
+    init(content: String, addedByUser: String, /*photo: UIPhoto, */ key:String = "") {
         self.key = key
         self.content = content
         self.addedByUser = addedByUser
         self.itemRef = nil
+        /*
+        self.photo = photo
+ */
     }
     
     init(snapShot: FIRDataSnapshot) {
@@ -28,16 +34,23 @@ struct Location {
         
         let snapShotValue = snapShot.value! as! [String: AnyObject]
         
-        if let locationContent = snapShotValue["content"] as? String {
-            content = locationContent
+        if let broadcastContent = snapShotValue["content"] as? String {
+            content = broadcastContent
         } else {
             content = ""
         }
         
-        if let locationUser = snapShotValue["addedByUser"] as? String {
-            addedByUser = locationUser
+        if let broadcastUser = snapShotValue["addedByUser"] as? String {
+            addedByUser = broadcastUser
         } else {
             addedByUser = ""
         }
+        /*
+        if let broadcastPhoto = snapShotValue["photo"] as? UIPhoto {
+            photo = broadcastPhoto
+        } else {
+            photo = nil
+        }
+ */
     }
 }

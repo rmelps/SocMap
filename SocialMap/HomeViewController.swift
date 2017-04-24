@@ -15,12 +15,34 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
     @IBOutlet weak var signInButton: SignInButton!
     @IBOutlet weak var signUpButton: SignInButton!
     
-    var map = MKMapView()
+    var map: MKMapView!
     var timer: Timer!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+    
+        // Slowly pan the mapView by calling setMapCenter every timeInterval
+        timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(setMapCenter(_:)), userInfo: nil, repeats: true)
+        timer.fire()
+        
+        // Place buttons in front on mapView
+        signInButton.layer.zPosition = 1
+        signUpButton.layer.zPosition = 1
+        
+        // Set up location manager, ask for authorization if not set by user
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        
+        if CLLocationManager.authorizationStatus() == .notDetermined {
+            locationManager.requestWhenInUseAuthorization()
+        }
+        self.locationManager.startUpdatingLocation()
+    }
+    
+    override func loadView() {
+        super.loadView()
         // Configure and load the map
+        map = MKMapView()
         let location = CLLocationCoordinate2D(latitude: 42, longitude: -71)
         let span = MKCoordinateSpan(latitudeDelta: 150, longitudeDelta: 75)
         map.region = MKCoordinateRegion(center: location, span: span)
@@ -30,20 +52,20 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
         map.isUserInteractionEnabled = false
         self.view.addSubview(map)
         
-    
-        timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(setMapCenter(_:)), userInfo: nil, repeats: true)
-        timer.fire()
         
-        signInButton.layer.zPosition = 1
-        signUpButton.layer.zPosition = 1
+        // Add constraints to the mapView
+        map.translatesAutoresizingMaskIntoConstraints = false
+        let mapLeadingConstraint = map.leadingAnchor.constraint(equalTo: self.view.leadingAnchor)
+        let mapTrailingConstraint = map.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
+        let mapTopConstraint = map.topAnchor.constraint(equalTo: self.view.topAnchor)
+        let mapBottomConstraint = map.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
         
-        locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        
-        if CLLocationManager.authorizationStatus() == .notDetermined {
-            locationManager.requestWhenInUseAuthorization()
-        }
-        self.locationManager.startUpdatingLocation()
+        mapLeadingConstraint.isActive = true
+        mapTrailingConstraint.isActive = true
+        mapTopConstraint.isActive = true
+        mapBottomConstraint.isActive = true
+ 
+ 
     }
 
     override func didReceiveMemoryWarning() {
