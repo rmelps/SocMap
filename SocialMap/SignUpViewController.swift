@@ -8,6 +8,7 @@
 
 import UIKit
 import FirebaseAuth
+import FirebaseDatabase
 
 class SignUpViewController: UIViewController, UITextFieldDelegate {
 
@@ -18,10 +19,15 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var signUpStackView: UIStackView!
     var signInButton: SignInButton!
     var signUpButton: SignInButton!
-    
+    var homeViewController: HomeViewController!
+    var createdUser: User?
+    var userDBRef: FIRDatabaseReference!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.layer.cornerRadius = 10
+        view.layer.borderColor = UIColor(red: 96/255, green: 170/255, blue: 1.0, alpha: 1.0).cgColor
+        view.layer.borderWidth = 3.0
         // Assign delegates of text fields to this view controller.
         emailAddress.delegate = self
         passwordCreateField.delegate = self
@@ -29,12 +35,26 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         
         // Hide the errorCode until one is active
         errorCode.isHidden = true
-        // Do any additional setup after loading the view.
+        
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        switch segue.identifier! {
+        case "customizeSignUpSegue":
+            let vc = segue.destination as! CreateProfileViewController
+            vc.createdUser = self.createdUser
+            vc.userDBRef = self.userDBRef
+            vc.password = self.passwordCreateField.text
+            vc.homeViewController = self.homeViewController
+            vc.signUpViewController = self
+        default:
+            preconditionFailure("Segue identifier does not exist")
+        }
     }
     
     @IBAction func signUpButtonTapped(_ sender: SignInButton) {
@@ -45,8 +65,10 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
             FIRAuth.auth()?.createUser(withEmail: emailAddress.text!, password: passwordCreateField.text!, completion: {
                 (user:FIRUser?, error:Error?) in
                 if error == nil {
-                    print(user?.email ?? "email address not created")
                     self.errorCode.isHidden = true
+                    self.createdUser = User(uid: user!.uid, email: user!.email!, userName: "User \(user!.uid)")
+                    let userRef = self.userDBRef.child("\(user!.uid)")
+                    userRef.setValue(self.createdUser?.toAny())
                     self.performSegue(withIdentifier: "customizeSignUpSegue", sender: self)
                 } else {
                     print(error?.localizedDescription ?? "error description not found")

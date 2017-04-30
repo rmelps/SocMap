@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SignInButton: UIButton {
+@IBDesignable class SignInButton: UIButton {
     
     @IBInspectable var buttonColor = UIColor.yellow {
         didSet {

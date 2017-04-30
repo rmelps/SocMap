@@ -25,9 +25,11 @@
 	<key>NSLocationUsageDescription</key>
 	<string>N/A</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>I need to always know where you are</string>
+	<string>Current Location is required to broadcast</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>I need To know where you are</string>
+	<string>Current Location is required to broadcast</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Photos are required to broadcast</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
 	<key>UIRequiredDeviceCapabilities</key>

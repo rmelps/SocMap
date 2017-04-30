@@ -14,18 +14,14 @@ struct Broadcast {
     let content: String!
     let addedByUser: String!
     let itemRef: FIRDatabaseReference?
-    /*
-    let photo: UIPhoto?
- */
+    let photoPath: String!
     
-    init(content: String, addedByUser: String, /*photo: UIPhoto, */ key:String = "") {
+    init(content: String, addedByUser: String, photoPath: String, key:String = "") {
         self.key = key
         self.content = content
         self.addedByUser = addedByUser
         self.itemRef = nil
-        /*
-        self.photo = photo
- */
+        self.photoPath = photoPath
     }
     
     init(snapShot: FIRDataSnapshot) {
@@ -45,12 +41,11 @@ struct Broadcast {
         } else {
             addedByUser = ""
         }
-        /*
-        if let broadcastPhoto = snapShotValue["photo"] as? UIPhoto {
-            photo = broadcastPhoto
+        
+        if let broadcastPhoto = snapShotValue["photo"] as? String {
+            photoPath = broadcastPhoto
         } else {
-            photo = nil
+            photoPath = ""
         }
- */
     }
 }
