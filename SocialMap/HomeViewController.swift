@@ -54,6 +54,10 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
         effect = visualEffectView.effect
         visualEffectView.effect = nil
         
+        // Slowly pan the mapView by calling setMapCenter every timeInterval
+        timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(setMapCenter(_:)), userInfo: nil, repeats: true)
+        timer?.fire()
+        
         menuView.layer.cornerRadius = 10
     }
     
@@ -75,8 +79,8 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
         map.delegate = self
         
         /*
-        let location = CLLocationCoordinate2D(latitude: 41.739, longitude: -70.308)
-        let span = MKCoordinateSpan(latitudeDelta: 1.0105, longitudeDelta: 0.7908)
+        let location = CLLocationCoordinate2D(latitude: 41.739, longitude: -122.308)
+        let span = MKCoordinateSpan(latitudeDelta: 60.0, longitudeDelta: 60.0)
         map.frame.size = CGSize(width: self.view.frame.width, height: self.view.frame.height)
         map.region = MKCoordinateRegion(center: location, span: span)
         map.mapType = .satellite
@@ -102,12 +106,13 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
         if initializingLocation {
             print("found location")
             let location = CLLocationCoordinate2D(latitude: locationManager.location!.coordinate.latitude, longitude: locationManager.location!.coordinate.longitude)
-            let span = MKCoordinateSpan(latitudeDelta: 75, longitudeDelta: 75)
+            let span = MKCoordinateSpan(latitudeDelta: 75.0, longitudeDelta: 75.0)
             map.region = MKCoordinateRegion(center: location, span: span)
             map.mapType = .satellite
             map.layer.zPosition = -2
             map.isUserInteractionEnabled = false
             self.view.addSubview(map)
+            print(map.region.span)
             
             // bring navigation bar to front in order for interaction
             self.view.bringSubview(toFront: navBar)
@@ -131,9 +136,7 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
     func mapViewDidFinishRenderingMap(_ mapView: MKMapView, fullyRendered: Bool) {
         if fullyRendered, initializingMapScroll {
         print("fully rendered")
-        // Slowly pan the mapView by calling setMapCenter every timeInterval
-        timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(setMapCenter(_:)), userInfo: nil, repeats: true)
-        timer?.fire()
+        
         initializingMapScroll = false
         }
         
@@ -287,7 +290,7 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
             self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.setMapCenter(_:)), userInfo: nil, repeats: true)
             self.map.showsUserLocation = false
             let centerL = self.map.centerCoordinate
-            let span = MKCoordinateSpan(latitudeDelta: 75, longitudeDelta: 75)
+            let span = MKCoordinateSpan(latitudeDelta: 75.0, longitudeDelta: 75.0)
             let region = MKCoordinateRegion(center: centerL, span: span)
             self.map.setRegion(region, animated: false)
             self.timer?.fire()

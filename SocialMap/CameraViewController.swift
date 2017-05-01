@@ -9,9 +9,14 @@
 import UIKit
 import AVFoundation
 
-class CameraViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class CameraViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, AVCapturePhotoCaptureDelegate {
+    
+    @IBOutlet weak var cancelImageButton: SignInButton!
+    @IBOutlet weak var broadcastImageButton: SignInButton!
+    @IBOutlet weak var captureImageButton: SignInButton!
     
     @IBOutlet weak var cameraView: UIView!
+    @IBOutlet weak var capturedImage: UIImageView!
     
     var captureSession: AVCaptureSession?
     var stillImageOutput: AVCapturePhotoOutput?
@@ -50,8 +55,8 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
         var input = AVCaptureDeviceInput()
         do {
             input = try AVCaptureDeviceInput(device: backCamera)
-        } catch let error {
-            fatalError(error.localizedDescription)
+        } catch {
+            print("Can not access back camera")
         }
         
         if captureSession!.canAddInput(input) {
@@ -63,24 +68,68 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
             if captureSession!.canAddOutput(stillImageOutput) {
                 captureSession?.addOutput(stillImageOutput)
                 
+                let bounds = UIScreen.main.bounds
+                
                 previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
                 previewLayer?.videoGravity = AVLayerVideoGravityResizeAspectFill
                 previewLayer?.connection.videoOrientation = AVCaptureVideoOrientation.portrait
+                previewLayer?.position = CGPoint(x: bounds.midX, y: bounds.midY)
                 cameraView.layer.addSublayer(previewLayer!)
-                captureSession?.startRunning()
+                previewLayer?.frame = bounds
             }
         }
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        let touch = touches.first!
-        let location = touch.location(in: self.view)
-        print(location)
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        captureSession?.startRunning()
+        
+        UIView.animate(withDuration: 0.5) { 
+            self.cameraView.alpha = 1
+        }
+        
+    }
+    @IBAction func dismissCapturedImage(_ sender: Any) {
+        capturedImage.isHidden = true
+        
+        captureImageButton.alpha = 1
+        cancelImageButton.alpha = 0
+        broadcastImageButton.alpha = 0
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(false)
-        previewLayer?.frame = cameraView.bounds
+    @IBAction func captureStillImage(_ sender: Any) {
+        
+        if let videoConnection = stillImageOutput?.connection(withMediaType: AVMediaTypeVideo) {
+            let settings = AVCapturePhotoSettings()
+            let previewPixelType = settings.availablePreviewPhotoPixelFormatTypes.first!
+            let previewFormat = [kCVPixelBufferPixelFormatTypeKey as String: previewPixelType,
+                                 kCVPixelBufferWidthKey as String: 160,
+                                 kCVPixelBufferHeightKey as String: 160]
+            settings.previewPhotoFormat = previewFormat
+            settings.flashMode = .auto
+            
+            videoConnection.videoOrientation = AVCaptureVideoOrientation.portrait
+            stillImageOutput?.capturePhoto(with: settings, delegate: self)
+        }
     }
-
+    
+    func capture(_ captureOutput: AVCapturePhotoOutput, didFinishProcessingPhotoSampleBuffer photoSampleBuffer: CMSampleBuffer?, previewPhotoSampleBuffer: CMSampleBuffer?, resolvedSettings: AVCaptureResolvedPhotoSettings, bracketSettings: AVCaptureBracketedStillImageSettings?, error: Error?) {
+        
+        if let error = error {
+            print(error.localizedDescription)
+        }
+        
+        if let sampleBuffer = photoSampleBuffer, let previewBuffer = previewPhotoSampleBuffer, let dataImage = AVCapturePhotoOutput.jpegPhotoDataRepresentation(forJPEGSampleBuffer: sampleBuffer, previewPhotoSampleBuffer: previewBuffer) {
+    
+            capturedImage.isHidden = false
+            capturedImage.image = UIImage(data: dataImage)
+            
+            captureImageButton.alpha = 0
+            cancelImageButton.alpha = 1
+            broadcastImageButton.alpha = 1
+                
+                
+            print("captured image")
+        }
+    }
 }

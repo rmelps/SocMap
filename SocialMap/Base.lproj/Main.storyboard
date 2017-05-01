@@ -109,7 +109,7 @@
                                             <color key="tintColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <connections>
                                                 <action selector="cameraButtonTapped:" destination="BYZ-38-t0r" id="ZhE-PW-EaQ"/>
-                                                <segue destination="mYS-dA-VQq" kind="presentation" identifier="showCamera" modalPresentationStyle="fullScreen" modalTransitionStyle="flipHorizontal" id="cE9-TO-DdJ"/>
+                                                <segue destination="mYS-dA-VQq" kind="presentation" identifier="showCamera" modalPresentationStyle="fullScreen" modalTransitionStyle="coverVertical" id="cE9-TO-DdJ"/>
                                             </connections>
                                         </barButtonItem>
                                     </navigationItem>
@@ -182,21 +182,102 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QR9-iV-1p6">
+                            <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QR9-iV-1p6">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="0.37570501179999999" green="0.66657312369999999" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ku6-cg-SHt">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <subviews>
+                                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="grV-ZZ-EKn">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="grV-ZZ-EKn" secondAttribute="bottom" id="8a5-7e-GX8"/>
+                                    <constraint firstItem="grV-ZZ-EKn" firstAttribute="leading" secondItem="Ku6-cg-SHt" secondAttribute="leading" id="iC2-0s-6xe"/>
+                                    <constraint firstItem="grV-ZZ-EKn" firstAttribute="top" secondItem="Ku6-cg-SHt" secondAttribute="top" id="v8K-jR-ySD"/>
+                                    <constraint firstAttribute="trailing" secondItem="grV-ZZ-EKn" secondAttribute="trailing" id="xoB-Af-TYe"/>
+                                </constraints>
+                            </view>
+                            <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="W20-od-svo">
+                                <rect key="frame" x="77.5" y="547" width="220" height="60"/>
+                                <subviews>
+                                    <button opaque="NO" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KFN-5C-FsD" customClass="SignInButton" customModule="SocialMap" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="60" height="60"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="60" id="lqI-PU-4eJ"/>
+                                            <constraint firstAttribute="width" constant="60" id="wve-Hk-pP5"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Noteworthy-Bold" family="Noteworthy" pointSize="20"/>
+                                        <state key="normal" title="X">
+                                            <color key="titleColor" red="0.37570501179999999" green="0.66657312369999999" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="buttonColor">
+                                                <color key="value" red="1" green="0.29341055561106666" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="dismissCapturedImage:" destination="mYS-dA-VQq" eventType="touchUpInside" id="Gqv-am-NaE"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Us-kO-XdZ" customClass="SignInButton" customModule="SocialMap" customModuleProvider="target">
+                                        <rect key="frame" x="80" y="0.0" width="60" height="60"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="60" id="Kf9-Bh-hgV"/>
+                                            <constraint firstAttribute="width" constant="60" id="ygm-Tf-0ai"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Noteworthy-Bold" family="Noteworthy" pointSize="17"/>
+                                        <state key="normal" title="Capture">
+                                            <color key="titleColor" red="0.37570501179999999" green="0.66657312369999999" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="captureStillImage:" destination="mYS-dA-VQq" eventType="touchUpInside" id="YMf-JQ-FqM"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YFi-ZB-Kkw" customClass="SignInButton" customModule="SocialMap" customModuleProvider="target">
+                                        <rect key="frame" x="160" y="0.0" width="60" height="60"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="60" id="Csh-tD-zzi"/>
+                                            <constraint firstAttribute="height" constant="60" id="eWd-Qt-k6i"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Noteworthy-Light" family="Noteworthy" pointSize="30"/>
+                                        <state key="normal" title="&gt;">
+                                            <color key="titleColor" red="0.37570501179999999" green="0.66657312369999999" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="buttonColor">
+                                                <color key="value" red="0.43784843180937294" green="1" blue="0.17543987357953383" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </button>
+                                </subviews>
+                            </stackView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.37570501179999999" green="0.66657312369999999" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="Vcl-zT-1YC" firstAttribute="top" secondItem="Ku6-cg-SHt" secondAttribute="bottom" id="69Q-i4-NY9"/>
+                            <constraint firstItem="W20-od-svo" firstAttribute="centerX" secondItem="wNg-fU-3SH" secondAttribute="centerX" id="CFa-4I-3kB"/>
+                            <constraint firstItem="Ku6-cg-SHt" firstAttribute="leading" secondItem="wNg-fU-3SH" secondAttribute="leading" id="DEV-Kb-huR"/>
+                            <constraint firstItem="W20-od-svo" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="wNg-fU-3SH" secondAttribute="leadingMargin" constant="20" id="SXs-na-m4g"/>
+                            <constraint firstItem="Ku6-cg-SHt" firstAttribute="top" secondItem="wNg-fU-3SH" secondAttribute="top" id="TNR-lh-mxu"/>
+                            <constraint firstAttribute="trailing" secondItem="Ku6-cg-SHt" secondAttribute="trailing" id="VQD-St-gSB"/>
                             <constraint firstItem="QR9-iV-1p6" firstAttribute="top" secondItem="32B-33-VLi" secondAttribute="bottom" constant="-20" id="Wlr-bb-kQk"/>
                             <constraint firstItem="QR9-iV-1p6" firstAttribute="leading" secondItem="wNg-fU-3SH" secondAttribute="leading" id="XA9-bj-J5d"/>
+                            <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="W20-od-svo" secondAttribute="trailing" constant="20" id="Xq3-Ll-G84"/>
+                            <constraint firstItem="Vcl-zT-1YC" firstAttribute="top" secondItem="W20-od-svo" secondAttribute="bottom" constant="60" id="obI-Iy-8rt"/>
                             <constraint firstItem="Vcl-zT-1YC" firstAttribute="top" secondItem="QR9-iV-1p6" secondAttribute="bottom" id="sYb-J2-H16"/>
                             <constraint firstAttribute="trailing" secondItem="QR9-iV-1p6" secondAttribute="trailing" id="zj4-Fy-hRt"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="broadcastImageButton" destination="YFi-ZB-Kkw" id="YZb-Np-cCJ"/>
                         <outlet property="cameraView" destination="QR9-iV-1p6" id="AKL-1f-I9W"/>
+                        <outlet property="cancelImageButton" destination="KFN-5C-FsD" id="Tuy-q0-1dI"/>
+                        <outlet property="captureImageButton" destination="3Us-kO-XdZ" id="hSO-mV-Nw5"/>
+                        <outlet property="capturedImage" destination="grV-ZZ-EKn" id="nMx-1c-hci"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Fwo-M7-FyS" userLabel="First Responder" sceneMemberID="firstResponder"/>
