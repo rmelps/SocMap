@@ -15,8 +15,8 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
     @IBOutlet weak var broadcastImageButton: SignInButton!
     @IBOutlet weak var captureImageButton: SignInButton!
     
-    @IBOutlet weak var cameraView: UIView!
-    @IBOutlet weak var capturedImage: UIImageView!
+    @IBOutlet var cameraView: UIView!
+    @IBOutlet var capturedImage: UIImageView!
     
     var captureSession: AVCaptureSession?
     var stillImageOutput: AVCapturePhotoOutput?
@@ -89,12 +89,26 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
         }
         
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        switch segue.identifier! {
+        case "editImageSegue":
+            let vc = segue.destination as! EditImageViewController
+            vc.image = self.capturedImage.image!
+        default:
+            preconditionFailure("segue identifier not configured")
+        }
+    }
     @IBAction func dismissCapturedImage(_ sender: Any) {
         capturedImage.isHidden = true
         
         captureImageButton.alpha = 1
         cancelImageButton.alpha = 0
         broadcastImageButton.alpha = 0
+    }
+    @IBAction func broadcastImage(_ sender: Any) {
+        print(capturedImage.image)
+        self.performSegue(withIdentifier: "editImageSegue", sender: self)
     }
     
     @IBAction func captureStillImage(_ sender: Any) {
@@ -124,11 +138,12 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
             capturedImage.isHidden = false
             capturedImage.image = UIImage(data: dataImage)
             
+            
             captureImageButton.alpha = 0
             cancelImageButton.alpha = 1
             broadcastImageButton.alpha = 1
-                
-                
+            
+            print(capturedImage.image ?? "nothing here")
             print("captured image")
         }
     }

@@ -20,6 +20,7 @@
 		954700C31EA7998900F6B5CD /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954700C21EA7998900F6B5CD /* SignInViewController.swift */; };
 		954700C51EA7A2E600F6B5CD /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954700C41EA7A2E600F6B5CD /* SignUpViewController.swift */; };
 		954700D01EB0172300F6B5CD /* CreateProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954700CF1EB0172300F6B5CD /* CreateProfileViewController.swift */; };
+		9579794C1EB7F9AE00AF92A5 /* EditImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9579794B1EB7F9AE00AF92A5 /* EditImageViewController.swift */; };
 		95E7D43A1EB65F310066F437 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95E7D4391EB65F310066F437 /* CameraViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -39,6 +40,7 @@
 		954700C21EA7998900F6B5CD /* SignInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		954700C41EA7A2E600F6B5CD /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		954700CF1EB0172300F6B5CD /* CreateProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateProfileViewController.swift; sourceTree = "<group>"; };
+		9579794B1EB7F9AE00AF92A5 /* EditImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditImageViewController.swift; sourceTree = "<group>"; };
 		95E7D4391EB65F310066F437 /* CameraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		DB7BE58AD6DDBB46E5D72D3D /* Pods-SocialMap.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SocialMap.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SocialMap/Pods-SocialMap.debug.xcconfig"; sourceTree = "<group>"; };
 		F27D159D5477737AA8B53698 /* Pods-SocialMap.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SocialMap.release.xcconfig"; path = "Pods/Target Support Files/Pods-SocialMap/Pods-SocialMap.release.xcconfig"; sourceTree = "<group>"; };
@@ -86,6 +88,7 @@
 				954700CF1EB0172300F6B5CD /* CreateProfileViewController.swift */,
 				95E7D4391EB65F310066F437 /* CameraViewController.swift */,
 				954700A81EA6DA0C00F6B5CD /* Main.storyboard */,
+				9579794B1EB7F9AE00AF92A5 /* EditImageViewController.swift */,
 				954700AB1EA6DA0C00F6B5CD /* Assets.xcassets */,
 				954700AD1EA6DA0C00F6B5CD /* LaunchScreen.storyboard */,
 				954700B61EA6DBC000F6B5CD /* GoogleService-Info.plist */,
@@ -261,6 +264,7 @@
 				954700C11EA6F8E300F6B5CD /* Broadcast.swift in Sources */,
 				954700A51EA6DA0C00F6B5CD /* AppDelegate.swift in Sources */,
 				954700BB1EA6EECD00F6B5CD /* SignInButton.swift in Sources */,
+				9579794C1EB7F9AE00AF92A5 /* EditImageViewController.swift in Sources */,
 				95E7D43A1EB65F310066F437 /* CameraViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
