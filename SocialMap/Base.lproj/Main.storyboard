@@ -132,6 +132,8 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="broadcastImage" destination="c0o-zC-vvm" id="YUx-h3-8cf"/>
+                        <outlet property="broadcastView" destination="Icb-OP-rVz" id="Wg9-iO-RfB"/>
                         <outlet property="menuView" destination="oUe-69-cIY" id="cyq-Rx-9Q0"/>
                         <outlet property="navBar" destination="Gdx-w6-h35" id="FcS-Ew-8bd"/>
                         <outlet property="signInButton" destination="80A-Pd-BYI" id="K20-pm-szv"/>
@@ -140,6 +142,24 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <view contentMode="scaleToFill" id="Icb-OP-rVz">
+                    <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="c0o-zC-vvm">
+                            <rect key="frame" x="56" y="0.0" width="128" height="128"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="128" id="JJW-ae-sV9"/>
+                                <constraint firstAttribute="width" secondItem="c0o-zC-vvm" secondAttribute="height" multiplier="1:1" id="Ly3-k8-PlR"/>
+                            </constraints>
+                        </imageView>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="c0o-zC-vvm" firstAttribute="centerY" secondItem="Icb-OP-rVz" secondAttribute="centerY" id="8nO-pd-pz1"/>
+                        <constraint firstItem="c0o-zC-vvm" firstAttribute="centerX" secondItem="Icb-OP-rVz" secondAttribute="centerX" id="qXZ-G3-fAP"/>
+                    </constraints>
+                </view>
                 <view contentMode="scaleToFill" id="oUe-69-cIY">
                     <rect key="frame" x="0.0" y="0.0" width="250" height="125"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
@@ -317,9 +337,22 @@
                                     <constraint firstItem="l5Z-bW-8FE" firstAttribute="centerY" secondItem="BWr-6n-fFr" secondAttribute="centerY" id="a2M-QT-mYC"/>
                                 </constraints>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cDx-jr-R0h" customClass="SignInButton" customModule="SocialMap" customModuleProvider="target">
+                                <rect key="frame" x="157" y="547" width="60" height="60"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="60" id="ZmW-q0-LEW"/>
+                                    <constraint firstAttribute="height" constant="60" id="bkg-h0-WNY"/>
+                                </constraints>
+                                <state key="normal" title="Nice"/>
+                                <connections>
+                                    <action selector="doneEditingButtonTapped:" destination="gz1-J5-yH8" eventType="touchUpInside" id="COn-aY-DWk"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="2Y3-rI-lId" firstAttribute="top" secondItem="cDx-jr-R0h" secondAttribute="bottom" constant="60" id="9Vv-hL-izm"/>
+                            <constraint firstItem="cDx-jr-R0h" firstAttribute="centerX" secondItem="7uT-UX-NMp" secondAttribute="centerX" id="EXw-v4-XSg"/>
                             <constraint firstItem="2Y3-rI-lId" firstAttribute="top" secondItem="BWr-6n-fFr" secondAttribute="bottom" id="PC4-cs-jPu"/>
                             <constraint firstItem="BWr-6n-fFr" firstAttribute="top" secondItem="7uT-UX-NMp" secondAttribute="top" id="Wag-5G-drZ"/>
                             <constraint firstItem="BWr-6n-fFr" firstAttribute="centerY" secondItem="7uT-UX-NMp" secondAttribute="centerY" id="aU9-1i-5ih"/>
@@ -330,11 +363,14 @@
                     </view>
                     <connections>
                         <outlet property="capturedImage" destination="l5Z-bW-8FE" id="WWg-WV-4Dm"/>
+                        <outlet property="doneButton" destination="cDx-jr-R0h" id="8vs-AJ-Q06"/>
+                        <segue destination="eBF-Je-aix" kind="unwind" identifier="returnToHomeSegue" animates="NO" unwindAction="unwindToHomeWithSegue:" id="5Nn-Ng-MHH"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="THV-Sw-ccB" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="eBF-Je-aix" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="1671" y="63"/>
+            <point key="canvasLocation" x="1669.5999999999999" y="62.518740629685162"/>
         </scene>
         <!--Sign Up View Controller-->
         <scene sceneID="Ynl-6c-pKJ">
@@ -605,7 +641,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="33" y="-619"/>
+            <point key="canvasLocation" x="33" y="-897"/>
         </scene>
     </scenes>
 </document>

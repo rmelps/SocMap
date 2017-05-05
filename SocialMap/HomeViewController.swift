@@ -12,9 +12,16 @@ import CoreLocation
 import FirebaseDatabase
 import FirebaseAuth
 
+enum MenuWindows {
+    case main
+    case broadcast
+}
+
 class HomeViewController: UIViewController, UIPopoverPresentationControllerDelegate, CLLocationManagerDelegate, MKMapViewDelegate {
     let locationManager = CLLocationManager()
     
+    @IBOutlet var broadcastView: UIView!
+    @IBOutlet weak var broadcastImage: UIImageView!
     @IBOutlet var menuView: UIView!
     
     @IBOutlet weak var visualEffectView: UIVisualEffectView!
@@ -32,6 +39,8 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
     var currentUser: User!
     var initializingLocation = true
     var initializingMapScroll = true
+    var currentPopUp: MenuWindows = .main
+    var fromCamera: Bool = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,6 +68,22 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
         timer?.fire()
         
         menuView.layer.cornerRadius = 10
+        broadcastView.layer.cornerRadius = 10
+        
+        // Configure broadcast menu
+        let screenWidth = self.view.frame.size.width
+        broadcastView.frame.size.width = screenWidth
+        broadcastView.frame.size.height = screenWidth
+        
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        if fromCamera {
+            animateIn(withWindow: .broadcast)
+            fromCamera = false
+        }
+        
     }
     
     override func loadView() {
@@ -198,6 +223,11 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
             preconditionFailure("Segue Identifier not found")
         }
     }
+    
+    @IBAction func unwindToHome(segue: UIStoryboardSegue) {
+        
+    }
+    
     @IBAction func signInButtonTapped(_ sender: SignInButton) {
         self.performSegue(withIdentifier: "signInSegue", sender: self)
     }
@@ -209,7 +239,7 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
         self.performSegue(withIdentifier: "showCamera", sender: self)
     }
     @IBAction func menuButtonTapped(_ sender: UIBarButtonItem) {
-        animateIn()
+        animateIn(withWindow: .main)
     }
     @IBAction func logOutButtonTapped(_ sender: UIButton) {
         self.animateOut()
@@ -238,42 +268,61 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
         map.setRegion(newRegion, animated: false)
     }
     
-    func animateIn() {
+    func animateIn(withWindow window: MenuWindows) {
+        var subView = UIView()
+        
+        switch window {
+        case .main:
+            subView = menuView
+            currentPopUp = .main
+        case .broadcast:
+            subView = broadcastView
+            currentPopUp = .broadcast
+        }
+        
         self.view.bringSubview(toFront: visualEffectView)
         self.view.bringSubview(toFront: navBar)
-        self.view.addSubview(menuView)
-        menuView.layer.borderColor = UIColor(red: 96/255, green: 170/255, blue: 1.0, alpha: 1.0).cgColor
-        menuView.layer.borderWidth = 3.0
+        self.view.addSubview(subView)
+        subView.layer.borderColor = UIColor(red: 96/255, green: 170/255, blue: 1.0, alpha: 1.0).cgColor
+        subView.layer.borderWidth = 3.0
         
-        let centerX = menuView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
-        let centerY = menuView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
+        let centerX = subView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
+        let centerY = subView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
         
         centerX.isActive = true
         centerY.isActive = true
         
-        menuView.center = self.view.center
+        subView.center = self.view.center
         
-        menuView.transform = CGAffineTransform.init(scaleX: 1.3, y: 1.3)
-        menuView.alpha = 0
+        subView.transform = CGAffineTransform.init(scaleX: 1.3, y: 1.3)
+        subView.alpha = 0
         
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(HomeViewController.animateOut))
         
         UIView.animate(withDuration: 0.4, animations: { 
             self.visualEffectView.effect = self.effect
-            self.menuView.alpha = 1
-            self.menuView.transform = CGAffineTransform.identity
+            subView.alpha = 1
+            subView.transform = CGAffineTransform.identity
         }) { (complete) in
             self.visualEffectView.addGestureRecognizer(tapGestureRecognizer)
         }
     }
     
     func animateOut() {
+        var subView = UIView()
+        switch currentPopUp {
+        case MenuWindows.main:
+            subView = menuView
+        case MenuWindows.broadcast:
+            subView = broadcastView
+        }
+        
         UIView.animate(withDuration: 0.4, animations: { 
-            self.menuView.transform = CGAffineTransform.init(scaleX: 1.3, y: 1.3)
-            self.menuView.alpha = 0
+            subView.transform = CGAffineTransform.init(scaleX: 1.3, y: 1.3)
+            subView.alpha = 0
             self.visualEffectView.effect = nil
         }) { (_) in
-            self.menuView.removeFromSuperview()
+            subView.removeFromSuperview()
             self.view.sendSubview(toBack: self.visualEffectView)
         }
     }
@@ -296,6 +345,18 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
             self.timer?.fire()
             self.map.isUserInteractionEnabled = false
         })
+    }
+    
+    func addBroadcastSubView() {
+        self.view.addSubview(broadcastView)
+        
+        let centerX = broadcastView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
+        let centerY = broadcastView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
+        
+        centerX.isActive = true
+        centerY.isActive = true
+        
+        broadcastView.center = self.view.center
     }
 }
 

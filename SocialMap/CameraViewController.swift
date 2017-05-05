@@ -107,7 +107,6 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
         broadcastImageButton.alpha = 0
     }
     @IBAction func broadcastImage(_ sender: Any) {
-        print(capturedImage.image)
         self.performSegue(withIdentifier: "editImageSegue", sender: self)
     }
     
