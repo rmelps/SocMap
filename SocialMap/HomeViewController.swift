@@ -17,11 +17,13 @@ enum MenuWindows {
     case broadcast
 }
 
-class HomeViewController: UIViewController, UIPopoverPresentationControllerDelegate, CLLocationManagerDelegate, MKMapViewDelegate {
+class HomeViewController: UIViewController, UIPopoverPresentationControllerDelegate, CLLocationManagerDelegate, MKMapViewDelegate, UITextViewDelegate {
     let locationManager = CLLocationManager()
     
+    @IBOutlet weak var descriptionText: UITextView!
     @IBOutlet var broadcastView: UIView!
     @IBOutlet weak var broadcastImage: UIImageView!
+    @IBOutlet weak var heightConstraint: NSLayoutConstraint!
     @IBOutlet var menuView: UIView!
     
     @IBOutlet weak var visualEffectView: UIVisualEffectView!
@@ -41,6 +43,15 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
     var initializingMapScroll = true
     var currentPopUp: MenuWindows = .main
     var fromCamera: Bool = false
+    
+    let borderColor = UIColor(red: 96/255, green: 170/255, blue: 1.0, alpha: 1.0).cgColor
+    
+    // Constraints dealing with popup windows (main and broadcast)
+    var centerX = NSLayoutConstraint()
+    var centerY = NSLayoutConstraint()
+    
+    // Reference to available broadcasts
+    var broadcasts = [Broadcast]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -72,8 +83,14 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
         
         // Configure broadcast menu
         let screenWidth = self.view.frame.size.width
+        let screenHeight = self.view.frame.size.height
         broadcastView.frame.size.width = screenWidth
-        broadcastView.frame.size.height = screenWidth
+        broadcastView.frame.size.height = screenHeight - (navBar.frame.height * 2)
+        heightConstraint.constant = broadcastView.frame.height / 2
+        descriptionText.layer.cornerRadius = 20
+        descriptionText.layer.borderWidth = 3.0
+        descriptionText.layer.borderColor = borderColor
+        descriptionText.delegate = self
         
     }
     override func viewDidAppear(_ animated: Bool) {
@@ -102,29 +119,6 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
         // Configure and load the map
         map = MKMapView()
         map.delegate = self
-        
-        /*
-        let location = CLLocationCoordinate2D(latitude: 41.739, longitude: -122.308)
-        let span = MKCoordinateSpan(latitudeDelta: 60.0, longitudeDelta: 60.0)
-        map.frame.size = CGSize(width: self.view.frame.width, height: self.view.frame.height)
-        map.region = MKCoordinateRegion(center: location, span: span)
-        map.mapType = .satellite
-        map.layer.zPosition = -2
-        map.isUserInteractionEnabled = false
-        self.view.addSubview(map)
-        
-        // Add constraints to the mapView
-        map.translatesAutoresizingMaskIntoConstraints = false
-        let mapLeadingConstraint = map.leadingAnchor.constraint(equalTo: self.view.leadingAnchor)
-        let mapTrailingConstraint = map.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
-        let mapTopConstraint = map.topAnchor.constraint(equalTo: self.view.topAnchor)
-        let mapBottomConstraint = map.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
-        
-        mapLeadingConstraint.isActive = true
-        mapTrailingConstraint.isActive = true
-        mapTopConstraint.isActive = true
-        mapBottomConstraint.isActive = true
- */
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
@@ -283,11 +277,11 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
         self.view.bringSubview(toFront: visualEffectView)
         self.view.bringSubview(toFront: navBar)
         self.view.addSubview(subView)
-        subView.layer.borderColor = UIColor(red: 96/255, green: 170/255, blue: 1.0, alpha: 1.0).cgColor
+        subView.layer.borderColor = borderColor
         subView.layer.borderWidth = 3.0
         
-        let centerX = subView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
-        let centerY = subView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
+        centerX = subView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
+        centerY = subView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
         
         centerX.isActive = true
         centerY.isActive = true
@@ -347,16 +341,32 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
         })
     }
     
-    func addBroadcastSubView() {
-        self.view.addSubview(broadcastView)
+    func textViewDidBeginEditing(_ textView: UITextView) {
         
-        let centerX = broadcastView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
-        let centerY = broadcastView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
+        self.view.bringSubview(toFront: navBar)
+        centerY.isActive = false
+        UIView.animate(withDuration: 0.3) { 
+            self.broadcastView.center.y = self.view.center.y - self.broadcastView.frame.height / 2
+        }
         
-        centerX.isActive = true
-        centerY.isActive = true
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
         
-        broadcastView.center = self.view.center
+        UIView.animate(withDuration: 0.3, animations: { 
+            self.broadcastView.center.y = self.view.center.y
+        }) { (_) in
+            self.centerY.isActive = true
+        }
+        
+    }
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if (text == "\n") {
+            textView.resignFirstResponder()
+            return false
+        }
+        return true
     }
 }
 
