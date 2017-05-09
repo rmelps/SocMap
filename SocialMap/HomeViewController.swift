@@ -244,6 +244,26 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
         }
         signOut()
     }
+    @IBAction func broadcastButtonTapped(_ sender: UIButton) {
+        // Time&Date related parameters for finding current date at upload
+        let date = Date()
+        let calendar = Calendar.current
+        let hour = calendar.component(.hour, from: date)
+        let minute = calendar.component(.minute, from: date)
+        let second = calendar.component(.second, from: date)
+        let nanoSec = calendar.component(.nanosecond, from: date)
+        
+        let time = ["hour": String(hour), "minute": String(minute), "second": String(second), "nano": String(nanoSec)]
+        
+        print(time)
+        
+    
+        let broadcast = Broadcast(content: descriptionText.text, addedByUser: currentUser.userName, photoPath: "testPath", time: time)
+        let broadcastTopRef = broadcastDBRef.child("\(currentUser.uid)")
+        let broadcastBotRef = broadcastTopRef.child("\(hour)\(minute)\(second)\(nanoSec)")
+        broadcastBotRef.setValue(broadcast.toAny())
+        
+    }
     
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
         return .none

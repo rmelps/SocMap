@@ -175,6 +175,9 @@
                             </constraints>
                             <fontDescription key="fontDescription" name="Noteworthy-Light" family="Noteworthy" pointSize="12"/>
                             <state key="normal" title="Broadcast"/>
+                            <connections>
+                                <action selector="broadcastButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="m1l-LN-hj5"/>
+                            </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
