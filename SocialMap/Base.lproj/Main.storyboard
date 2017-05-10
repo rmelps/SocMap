@@ -133,6 +133,7 @@
                     </view>
                     <connections>
                         <outlet property="broadcastImage" destination="c0o-zC-vvm" id="YUx-h3-8cf"/>
+                        <outlet property="broadcastImageUploadProgressBar" destination="sOv-vf-wYf" id="5Vy-zo-knU"/>
                         <outlet property="broadcastView" destination="Icb-OP-rVz" id="Wg9-iO-RfB"/>
                         <outlet property="descriptionText" destination="XOX-wR-6Am" id="Xbv-jN-J3h"/>
                         <outlet property="heightConstraint" destination="JJW-ae-sV9" id="g82-0s-waw"/>
@@ -179,9 +180,13 @@
                                 <action selector="broadcastButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="m1l-LN-hj5"/>
                             </connections>
                         </button>
+                        <progressView hidden="YES" opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="sOv-vf-wYf">
+                            <rect key="frame" x="23" y="214" width="129" height="2"/>
+                        </progressView>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
+                        <constraint firstItem="sOv-vf-wYf" firstAttribute="top" secondItem="XOX-wR-6Am" secondAttribute="bottom" constant="32" id="Gyu-F2-eSH"/>
                         <constraint firstItem="c0o-zC-vvm" firstAttribute="top" secondItem="Icb-OP-rVz" secondAttribute="top" id="NVZ-aZ-Gj8"/>
                         <constraint firstItem="c0o-zC-vvm" firstAttribute="centerX" secondItem="Icb-OP-rVz" secondAttribute="centerX" id="QGj-Xj-M9K"/>
                         <constraint firstAttribute="trailing" secondItem="XOX-wR-6Am" secondAttribute="trailing" constant="23" id="ShX-x5-3Nf"/>
@@ -192,6 +197,8 @@
                         <constraint firstItem="XOX-wR-6Am" firstAttribute="top" secondItem="c0o-zC-vvm" secondAttribute="bottom" constant="28" id="hXw-0E-hDw"/>
                         <constraint firstItem="XOX-wR-6Am" firstAttribute="leading" secondItem="Icb-OP-rVz" secondAttribute="leading" constant="23" id="jYA-Gy-7kE"/>
                         <constraint firstItem="tGW-se-GBk" firstAttribute="centerX" secondItem="Icb-OP-rVz" secondAttribute="centerX" id="leh-VI-Yet"/>
+                        <constraint firstItem="V3y-hm-tpH" firstAttribute="leading" secondItem="sOv-vf-wYf" secondAttribute="trailing" constant="15" id="xxh-hS-vWx"/>
+                        <constraint firstItem="sOv-vf-wYf" firstAttribute="leading" secondItem="Icb-OP-rVz" secondAttribute="leading" constant="23" id="zdS-mP-dD5"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" id="oUe-69-cIY">

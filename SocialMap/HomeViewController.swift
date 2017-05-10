@@ -11,6 +11,7 @@ import MapKit
 import CoreLocation
 import FirebaseDatabase
 import FirebaseAuth
+import FirebaseStorage
 
 enum MenuWindows {
     case main
@@ -20,6 +21,7 @@ enum MenuWindows {
 class HomeViewController: UIViewController, UIPopoverPresentationControllerDelegate, CLLocationManagerDelegate, MKMapViewDelegate, UITextViewDelegate {
     let locationManager = CLLocationManager()
     
+    @IBOutlet weak var broadcastImageUploadProgressBar: UIProgressView!
     @IBOutlet weak var descriptionText: UITextView!
     @IBOutlet var broadcastView: UIView!
     @IBOutlet weak var broadcastImage: UIImageView!
@@ -33,8 +35,15 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
     @IBOutlet weak var signInButton: SignInButton!
     @IBOutlet weak var signUpButton: SignInButton!
     
+    // Database branch references
     var broadcastDBRef: FIRDatabaseReference!
     var userDBRef: FIRDatabaseReference!
+    
+    // File storage references
+    var storage: FIRStorage!
+    var storageRef: FIRStorageReference!
+    var imagesRef: FIRStorageReference!
+    
     var map: MKMapView!
     var timer: Timer?
     var effect: UIVisualEffect!
@@ -61,9 +70,14 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
         // bring navigation bar to front in order for interaction
         self.view.bringSubview(toFront: navBar)
         
-        // Reference the firebase database where broadcasts & user profiles will be saved
+        // Create reference to FIRDatabase service
         broadcastDBRef = FIRDatabase.database().reference().child("broadcast-items")
         userDBRef = FIRDatabase.database().reference().child("user-profiles")
+        
+        // Create reference to FIRStorage service
+        storage = FIRStorage.storage()
+        storageRef = storage.reference()
+        imagesRef = storageRef.child("broadcastImages")
         
         // Place buttons in front on mapView
         signInButton.layer.zPosition = 1
@@ -245,6 +259,9 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
         signOut()
     }
     @IBAction func broadcastButtonTapped(_ sender: UIButton) {
+        
+        descriptionText.resignFirstResponder()
+        
         // Time&Date related parameters for finding current date at upload
         let date = Date()
         let calendar = Calendar.current
@@ -253,15 +270,45 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
         let second = calendar.component(.second, from: date)
         let nanoSec = calendar.component(.nanosecond, from: date)
         
+        let timeStampIdentifier = "\(hour)\(minute)\(second)\(nanoSec)"
+        
         let time = ["hour": String(hour), "minute": String(minute), "second": String(second), "nano": String(nanoSec)]
         
-        print(time)
+        // Create Data object from broadcastImage
+        let broadcastImageData = UIImageJPEGRepresentation(broadcastImage.image!, 1.0)
+        let imageRef = imagesRef.child("\(currentUser.uid)\(timeStampIdentifier)")
         
-    
-        let broadcast = Broadcast(content: descriptionText.text, addedByUser: currentUser.userName, photoPath: "testPath", time: time)
-        let broadcastTopRef = broadcastDBRef.child("\(currentUser.uid)")
-        let broadcastBotRef = broadcastTopRef.child("\(hour)\(minute)\(second)\(nanoSec)")
-        broadcastBotRef.setValue(broadcast.toAny())
+        // Create the upload task to handle sending data to FIRStorage
+        let uploadTask = imageRef.put(broadcastImageData!, metadata: nil) { (metaData:FIRStorageMetadata?, error:Error?) in
+            guard let metaData = metaData else {
+                print(error?.localizedDescription ?? "error description not found")
+                return
+            }
+        
+            if let coordinate = self.locationManager.location?.coordinate {
+                
+                let downloadURL = "\(metaData.downloadURL()!)"
+            
+                let lattitude = "\(coordinate.latitude)"
+                let longitude = "\(coordinate.longitude)"
+                let coordinateString = ["lattitude": lattitude, "longitude": longitude]
+            
+                let broadcast = Broadcast(content: self.descriptionText.text, addedByUser: self.currentUser.userName, photoPath: downloadURL, time: time, coordinate: coordinateString)
+                let broadcastTopRef = self.broadcastDBRef.child("\(self.currentUser.uid)")
+                let broadcastBotRef = broadcastTopRef.child(timeStampIdentifier)
+                broadcastBotRef.setValue(broadcast.toAny())
+                self.animateOut()
+                self.broadcastImageUploadProgressBar.isHidden = true
+                self.broadcastImageUploadProgressBar.progress = 0.0
+            }
+        }
+        
+        uploadTask.observe(.progress) { (snapShot:FIRStorageTaskSnapshot) in
+            self.broadcastImageUploadProgressBar.isHidden = false
+            if let progressFraction = snapShot.progress?.fractionCompleted {
+                self.broadcastImageUploadProgressBar.progress = Float(progressFraction)
+            }
+        }
         
     }
     

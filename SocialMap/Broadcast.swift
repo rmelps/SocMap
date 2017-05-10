@@ -16,14 +16,16 @@ struct Broadcast {
     let itemRef: FIRDatabaseReference?
     let photoPath: String!
     let uploadTime: [String:String]
+    let coordinate: [String:String]
     
-    init(content: String, addedByUser: String, photoPath: String, key:String = "", time: [String:String]) {
+    init(content: String, addedByUser: String, photoPath: String, key:String = "", time: [String:String], coordinate: [String:String]) {
         self.key = key
         self.content = content
         self.addedByUser = addedByUser
         self.itemRef = nil
         self.photoPath = photoPath
         self.uploadTime = time
+        self.coordinate = coordinate
     }
     
     init(snapShot: FIRDataSnapshot) {
@@ -55,9 +57,21 @@ struct Broadcast {
         } else {
             uploadTime = ["":""]
         }
+        
+        if let coordinate = snapShotValue["coordinate"] as? [String:String] {
+            self.coordinate = coordinate
+        } else {
+            coordinate = ["":""]
+        }
     }
     
     func toAny() -> Any {
-        return ["content": content, "addedByUser": addedByUser, "photo": photoPath, "time": uploadTime]
+        return [
+            "content": content,
+            "addedByUser": addedByUser,
+            "photo": photoPath,
+            "time": uploadTime,
+            "coordinate": coordinate
+            ]
     }
 }
