@@ -109,7 +109,6 @@
                                             <color key="tintColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <connections>
                                                 <action selector="cameraButtonTapped:" destination="BYZ-38-t0r" id="ZhE-PW-EaQ"/>
-                                                <segue destination="mYS-dA-VQq" kind="presentation" identifier="showCamera" modalPresentationStyle="fullScreen" modalTransitionStyle="crossDissolve" id="cE9-TO-DdJ"/>
                                             </connections>
                                         </barButtonItem>
                                     </navigationItem>
@@ -142,6 +141,7 @@
                         <outlet property="signInButton" destination="80A-Pd-BYI" id="K20-pm-szv"/>
                         <outlet property="signUpButton" destination="Kyu-kv-5va" id="t07-a1-Fy3"/>
                         <outlet property="visualEffectView" destination="JhO-xA-pHg" id="TS6-zm-gIp"/>
+                        <segue destination="mYS-dA-VQq" kind="presentation" identifier="showCamera" modalPresentationStyle="fullScreen" modalTransitionStyle="crossDissolve" id="ISG-aQ-1ZI"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -162,8 +162,8 @@
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done"/>
                         </textView>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Desciption" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tGW-se-GBk">
-                            <rect key="frame" x="87" y="64.5" width="66.5" height="27.5"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tGW-se-GBk">
+                            <rect key="frame" x="84" y="64.5" width="72.5" height="27.5"/>
                             <fontDescription key="fontDescription" name="Noteworthy-Light" family="Noteworthy" pointSize="17"/>
                             <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>

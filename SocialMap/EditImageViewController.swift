@@ -57,11 +57,9 @@ class EditImageViewController: UIViewController {
         if let myView = recognizer.view {
             let centerPoint = myView.convert(myView.center, to: self.view)
             let subHeight = myView.frame.height
-            let mainHeight = UIScreen.main.fixedCoordinateSpace.bounds.height
-            let adjustedHeight = mainHeight - (subHeight / 2)
+            let mainHeight = view.frame.maxY
+            let adjustedHeight = mainHeight
             
-            print(centerPoint)
-            print(adjustedHeight)
             
             let translation = recognizer.translation(in: self.view)
             
@@ -74,11 +72,15 @@ class EditImageViewController: UIViewController {
                 myView.center = CGPoint(x: self.view.center.x, y: centerPoint.x + 0.1)
                 recognizer.setTranslation(CGPoint.zero, in: self.view)
             }
+            
             if centerPoint.y > adjustedHeight {
-                myView.center = CGPoint(x: self.view.center.x, y: adjustedHeight - 0.1)
+                let trans = centerPoint.y - adjustedHeight
+                print(trans)
+                print(recognizer.view!.center.y)
+                myView.center = CGPoint(x: self.view.center.x, y: recognizer.view!.center.y - trans - 1)
                 recognizer.setTranslation(CGPoint.zero, in: self.view)
-                print(adjustedHeight)
             }
+
         }
     }
     

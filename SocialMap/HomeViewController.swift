@@ -50,7 +50,11 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
     var currentUser: User!
     var initializingLocation = true
     var initializingMapScroll = true
-    var currentPopUp: MenuWindows = .main
+    var currentPopUp: MenuWindows? = nil {
+        didSet {
+            print(currentPopUp)
+        }
+    }
     var fromCamera: Bool = false
     
     let borderColor = UIColor(red: 96/255, green: 170/255, blue: 1.0, alpha: 1.0).cgColor
@@ -244,9 +248,15 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
     }
     
     @IBAction func cameraButtonTapped(_ sender: UIBarButtonItem) {
-        self.performSegue(withIdentifier: "showCamera", sender: self)
+        
+        if currentPopUp != .main {
+            self.performSegue(withIdentifier: "showCamera", sender: self)
+        }
     }
     @IBAction func menuButtonTapped(_ sender: UIBarButtonItem) {
+        guard currentPopUp != .broadcast else {
+            return
+        }
         animateIn(withWindow: .main)
     }
     @IBAction func logOutButtonTapped(_ sender: UIButton) {
@@ -261,6 +271,7 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
     @IBAction func broadcastButtonTapped(_ sender: UIButton) {
         
         descriptionText.resignFirstResponder()
+        sender.isEnabled = false
         
         // Time&Date related parameters for finding current date at upload
         let date = Date()
@@ -282,6 +293,7 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
         let uploadTask = imageRef.put(broadcastImageData!, metadata: nil) { (metaData:FIRStorageMetadata?, error:Error?) in
             guard let metaData = metaData else {
                 print(error?.localizedDescription ?? "error description not found")
+                sender.isEnabled = true
                 return
             }
         
@@ -300,6 +312,8 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
                 self.animateOut()
                 self.broadcastImageUploadProgressBar.isHidden = true
                 self.broadcastImageUploadProgressBar.progress = 0.0
+                self.descriptionText.text = ""
+                sender.isEnabled = true
             }
         }
         
@@ -336,6 +350,7 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
         case .main:
             subView = menuView
             currentPopUp = .main
+            
         case .broadcast:
             subView = broadcastView
             currentPopUp = .broadcast
@@ -372,10 +387,12 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
     func animateOut() {
         var subView = UIView()
         switch currentPopUp {
-        case MenuWindows.main:
+        case MenuWindows.main?:
             subView = menuView
-        case MenuWindows.broadcast:
+        case MenuWindows.broadcast?:
             subView = broadcastView
+        default:
+            break
         }
         
         UIView.animate(withDuration: 0.4, animations: { 
@@ -386,6 +403,8 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
             subView.removeFromSuperview()
             self.view.sendSubview(toBack: self.visualEffectView)
         }
+        
+        currentPopUp = nil
     }
     
     func signOut() {
