@@ -47,14 +47,14 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
     var map: MKMapView!
     var timer: Timer?
     var effect: UIVisualEffect!
-    var currentUser: User!
-    var initializingLocation = true
-    var initializingMapScroll = true
-    var currentPopUp: MenuWindows? = nil {
-        didSet {
-            print(currentPopUp)
+    var currentUser: User! {
+        didSet{
+            refreshAnnotationsAsync()
         }
     }
+    var initializingLocation = true
+    var initializingMapScroll = true
+    var currentPopUp: MenuWindows? = nil
     var fromCamera: Bool = false
     
     let borderColor = UIColor(red: 96/255, green: 170/255, blue: 1.0, alpha: 1.0).cgColor
@@ -65,6 +65,7 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
     
     // Reference to available broadcasts
     var broadcasts = [Broadcast]()
+    var annotations = [BroadcastTowerPin]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -109,7 +110,6 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
         descriptionText.layer.borderWidth = 3.0
         descriptionText.layer.borderColor = borderColor
         descriptionText.delegate = self
-        
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -141,7 +141,6 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if initializingLocation {
-            print("found location")
             let location = CLLocationCoordinate2D(latitude: locationManager.location!.coordinate.latitude, longitude: locationManager.location!.coordinate.longitude)
             let span = MKCoordinateSpan(latitudeDelta: 75.0, longitudeDelta: 75.0)
             map.region = MKCoordinateRegion(center: location, span: span)
@@ -168,6 +167,30 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
             mapTopConstraint.isActive = true
             mapBottomConstraint.isActive = true
         }
+    }
+    
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        let reuseIdentifier = "towerPin"
+        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseIdentifier)
+        
+        if annotationView == nil {
+            annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: reuseIdentifier)
+            annotationView?.canShowCallout = true
+        } else {
+            annotationView?.annotation = annotation
+        }
+        
+        let pinImage = UIImage(named: "BroadcastTower")
+        let size = CGSize(width: 50, height: 50)
+        
+        UIGraphicsBeginImageContext(size)
+        pinImage?.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+        let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        annotationView?.image = resizedImage
+        
+        return annotationView
     }
     
     func mapViewDidFinishRenderingMap(_ mapView: MKMapView, fullyRendered: Bool) {
@@ -253,6 +276,32 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
             self.performSegue(withIdentifier: "showCamera", sender: self)
         }
     }
+    @IBAction func refreshButtonTapped(_ sender: Any) {
+        
+        if currentUser != nil {
+        
+            map.removeAnnotations(map.annotations)
+            storeActiveBroadcasts()
+            
+            for broadcast in self.broadcasts {
+                let lattitude = Double(broadcast.coordinate["lattitude"] ?? "0.0")
+                let longitude = Double(broadcast.coordinate["longitude"] ?? "0.0")
+                
+                let location = CLLocationCoordinate2D(latitude: lattitude!, longitude: longitude!)
+                
+                let towerAnnotation = BroadcastTowerPin()
+                towerAnnotation.pinCustomImageName = "BroadcastTower"
+                towerAnnotation.coordinate = location
+                
+                let towerAnnotationView = MKPinAnnotationView(annotation: towerAnnotation,reuseIdentifier: "towerPin")
+                self.map.addAnnotation(towerAnnotationView.annotation!)
+            }
+            
+        } else {
+            map.removeAnnotations(map.annotations)
+        }
+        
+    }
     @IBAction func menuButtonTapped(_ sender: UIBarButtonItem) {
         guard currentPopUp != .broadcast else {
             return
@@ -314,6 +363,7 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
                 self.broadcastImageUploadProgressBar.progress = 0.0
                 self.descriptionText.text = ""
                 sender.isEnabled = true
+                self.refreshAnnotationsAsync()
             }
         }
         
@@ -453,6 +503,59 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
             return false
         }
         return true
+    }
+    
+    func storeActiveBroadcasts() {
+        broadcastDBRef.observe(.value) { (snapShot:FIRDataSnapshot) in
+            var newBroadcasts = [Broadcast]()
+            var userIDs = [String]()
+            
+            // First, we need to store each branch corresponding to the each user uid
+            // that currently has an active broadcast
+            for id in snapShot.children {
+                userIDs.append((id as AnyObject).key)
+            }
+            
+            // For each user uid, we will follow the branch associated with that user
+            // to iterate over all active broadcasts and store the data locally
+            for key in userIDs {
+                let childSnapshot = snapShot.childSnapshot(forPath: key)
+                
+                for child in childSnapshot.children {
+                    let broadcastObject = Broadcast(snapShot: child as! FIRDataSnapshot)
+                    newBroadcasts.append(broadcastObject)
+                }
+            }
+            
+            self.broadcasts = newBroadcasts
+        }
+    }
+    
+    func refreshAnnotationsAsync() {
+        if currentUser != nil {
+            storeActiveBroadcasts()
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 4.0, execute: {
+                print("firing timer...")
+                self.map.removeAnnotations(self.map.annotations)
+                
+                for broadcast in self.broadcasts {
+                    let lattitude = Double(broadcast.coordinate["lattitude"] ?? "0.0")
+                    let longitude = Double(broadcast.coordinate["longitude"] ?? "0.0")
+                    
+                    let location = CLLocationCoordinate2D(latitude: lattitude!, longitude: longitude!)
+                    
+                    let towerAnnotation = BroadcastTowerPin()
+                    towerAnnotation.pinCustomImageName = "BroadcastTower"
+                    towerAnnotation.coordinate = location
+                    
+                    let towerAnnotationView = MKPinAnnotationView(annotation: towerAnnotation, reuseIdentifier: "towerPin")
+                    self.map.addAnnotation(towerAnnotationView.annotation!)
+                }
+            })
+        } else {
+            map.removeAnnotations(map.annotations)
+        }
     }
 }
 
