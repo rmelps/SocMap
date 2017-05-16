@@ -170,25 +170,35 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
     }
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        
+        if annotation.isEqual(mapView.userLocation) {
+            return nil
+        }
+        
         let reuseIdentifier = "towerPin"
         var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseIdentifier)
         
         if annotationView == nil {
-            annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: reuseIdentifier)
-            annotationView?.canShowCallout = true
+            annotationView = CustomAnnotationView(annotation: annotation, reuseIdentifier: reuseIdentifier)
+            annotationView?.canShowCallout = false
         } else {
             annotationView?.annotation = annotation
         }
         
-        let pinImage = UIImage(named: "BroadcastTower")
-        let size = CGSize(width: 50, height: 50)
+        if let broadcastAnnotation = annotation as? BroadcastTowerPin {
+            let pinImage = UIImage(named: broadcastAnnotation.pinCustomImageName)
+            let size = CGSize(width: 50, height: 50)
         
-        UIGraphicsBeginImageContext(size)
-        pinImage?.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
-        let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        annotationView?.image = resizedImage
+            UIGraphicsBeginImageContext(size)
+            pinImage?.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+            let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+            annotationView?.image = resizedImage
+            
+            
+            
+            
+        }
         
         return annotationView
     }
@@ -547,6 +557,7 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
                     
                     let towerAnnotation = BroadcastTowerPin()
                     towerAnnotation.pinCustomImageName = "BroadcastTower"
+                    towerAnnotation.photoPath = broadcast.photoPath
                     towerAnnotation.coordinate = location
                     
                     let towerAnnotationView = MKPinAnnotationView(annotation: towerAnnotation, reuseIdentifier: "towerPin")
@@ -555,6 +566,24 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
             })
         } else {
             map.removeAnnotations(map.annotations)
+        }
+    }
+    
+    func downloadPhotoFromFIRStorageIntoMemory(fromPath path: String, image: UIImage) {
+        
+        var image = UIImage()
+        
+        // Create a reference to the file that will be downloaded
+        let reference = storage.reference(forURL: path)
+        
+        // Download image at path to local memory with defined maximum size
+        reference.data(withMaxSize: 10 * 1024 * 1024) { (data:Data?, error:Error?) in
+            if let error = error {
+                print(error.localizedDescription)
+            }
+            if let data = data {
+                image = UIImage(data: data)!
+            }
         }
     }
 }
