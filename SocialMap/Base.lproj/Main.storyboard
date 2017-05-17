@@ -100,11 +100,17 @@
                                 </textAttributes>
                                 <items>
                                     <navigationItem title="OneGlobe" id="Z4Y-l7-ktw">
-                                        <leftBarButtonItems>
-                                            <barButtonItem systemItem="bookmarks" id="CWN-DY-FuP">
+                                        <barButtonItem key="leftBarButtonItem" image="MenuList" id="CWN-DY-FuP">
+                                            <color key="tintColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            <connections>
+                                                <action selector="menuButtonTapped:" destination="BYZ-38-t0r" id="5bh-kL-1A0"/>
+                                            </connections>
+                                        </barButtonItem>
+                                        <rightBarButtonItems>
+                                            <barButtonItem systemItem="camera" id="y7Z-kn-0f2">
                                                 <color key="tintColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                 <connections>
-                                                    <action selector="menuButtonTapped:" destination="BYZ-38-t0r" id="5bh-kL-1A0"/>
+                                                    <action selector="cameraButtonTapped:" destination="BYZ-38-t0r" id="ZhE-PW-EaQ"/>
                                                 </connections>
                                             </barButtonItem>
                                             <barButtonItem style="done" systemItem="refresh" id="Q6E-kB-iqF">
@@ -113,13 +119,7 @@
                                                     <action selector="refreshButtonTapped:" destination="BYZ-38-t0r" id="cFr-rB-YgW"/>
                                                 </connections>
                                             </barButtonItem>
-                                        </leftBarButtonItems>
-                                        <barButtonItem key="rightBarButtonItem" systemItem="camera" id="y7Z-kn-0f2">
-                                            <color key="tintColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                            <connections>
-                                                <action selector="cameraButtonTapped:" destination="BYZ-38-t0r" id="ZhE-PW-EaQ"/>
-                                            </connections>
-                                        </barButtonItem>
+                                        </rightBarButtonItems>
                                     </navigationItem>
                                 </items>
                             </navigationBar>
@@ -694,4 +694,7 @@
             <point key="canvasLocation" x="33" y="-897"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="MenuList" width="50" height="50"/>
+    </resources>
 </document>

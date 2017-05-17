@@ -215,6 +215,43 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
     func mapViewDidFailLoadingMap(_ mapView: MKMapView, withError error: Error) {
         print(error.localizedDescription)
     }
+    
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        if view.annotation is MKUserLocation {
+            return
+        }
+        
+        if let broadcastAnnotation = view.annotation as? BroadcastTowerPin {
+            print("broadcast annotation selected")
+            
+            let views = Bundle.main.loadNibNamed("BroadcastCalloutView", owner: nil, options: nil)
+            let calloutView = views?[0] as! BroadcastCalloutView
+            calloutView.descriptionText.text = broadcastAnnotation.descriptionText
+            calloutView.postedByLabel.text = broadcastAnnotation.postedBy
+            calloutView.postTime.text = broadcastAnnotation.postTime
+            calloutView.likesLabel.text = String(broadcastAnnotation.likes)
+            calloutView.flagsLabel.text = String(broadcastAnnotation.flags)
+            
+            // Create a reference to the file that will be downloaded
+            let reference = storage.reference(forURL: broadcastAnnotation.photoPath)
+            
+            // Download image at path to local memory with defined maximum size
+            reference.data(withMaxSize: 10 * 1024 * 1024) { (data:Data?, error:Error?) in
+                if let error = error {
+                    print(error.localizedDescription)
+                }
+                if let data = data {
+                    calloutView.image.image = UIImage(data: data)!
+                }
+            }
+            
+            calloutView.center = CGPoint(x: view.bounds.size.width / 2, y: -calloutView.bounds.size.height*0.52)
+            view.addSubview(calloutView)
+            mapView.setCenter((view.annotation?.coordinate)!, animated: true)
+            
+            
+        }
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -302,6 +339,7 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
                 let towerAnnotation = BroadcastTowerPin()
                 towerAnnotation.pinCustomImageName = "BroadcastTower"
                 towerAnnotation.coordinate = location
+                
                 
                 let towerAnnotationView = MKPinAnnotationView(annotation: towerAnnotation,reuseIdentifier: "towerPin")
                 self.map.addAnnotation(towerAnnotationView.annotation!)
@@ -559,6 +597,11 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
                     towerAnnotation.pinCustomImageName = "BroadcastTower"
                     towerAnnotation.photoPath = broadcast.photoPath
                     towerAnnotation.coordinate = location
+                    towerAnnotation.postedBy = broadcast.addedByUser
+                    towerAnnotation.postTime = broadcast.uploadTime["hour"]
+                    towerAnnotation.likes = 0
+                    towerAnnotation.flags = 0
+                    towerAnnotation.descriptionText = broadcast.content
                     
                     let towerAnnotationView = MKPinAnnotationView(annotation: towerAnnotation, reuseIdentifier: "towerPin")
                     self.map.addAnnotation(towerAnnotationView.annotation!)
@@ -566,24 +609,6 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
             })
         } else {
             map.removeAnnotations(map.annotations)
-        }
-    }
-    
-    func downloadPhotoFromFIRStorageIntoMemory(fromPath path: String, image: UIImage) {
-        
-        var image = UIImage()
-        
-        // Create a reference to the file that will be downloaded
-        let reference = storage.reference(forURL: path)
-        
-        // Download image at path to local memory with defined maximum size
-        reference.data(withMaxSize: 10 * 1024 * 1024) { (data:Data?, error:Error?) in
-            if let error = error {
-                print(error.localizedDescription)
-            }
-            if let data = data {
-                image = UIImage(data: data)!
-            }
         }
     }
 }

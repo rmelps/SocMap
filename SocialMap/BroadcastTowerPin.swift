@@ -12,4 +12,9 @@ import MapKit
 class BroadcastTowerPin: MKPointAnnotation {
     var pinCustomImageName: String!
     var photoPath: String!
+    var postedBy: String!
+    var postTime: String!
+    var likes: Int!
+    var flags: Int!
+    var descriptionText: String!
 }
