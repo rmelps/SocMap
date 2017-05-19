@@ -20,7 +20,6 @@
                     <rect key="frame" x="0.0" y="46.5" width="313" height="313"/>
                     <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="313" id="TGk-ae-olf"/>
                         <constraint firstAttribute="width" secondItem="jTQ-Mk-z5g" secondAttribute="height" multiplier="1:1" id="XhF-RK-2eQ"/>
                     </constraints>
                 </imageView>
