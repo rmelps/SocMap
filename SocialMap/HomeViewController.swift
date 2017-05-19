@@ -195,9 +195,6 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
             UIGraphicsEndImageContext()
             annotationView?.image = resizedImage
             
-            
-            
-            
         }
         
         return annotationView
@@ -222,21 +219,23 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
         }
         
         if let broadcastAnnotation = view.annotation as? BroadcastTowerPin {
-            print("broadcast annotation selected")
+            
+            
             
             let views = Bundle.main.loadNibNamed("BroadcastCalloutView", owner: nil, options: nil)
             let calloutView = views?[0] as! BroadcastCalloutView
-            calloutView.descriptionText.text = broadcastAnnotation.descriptionText
-            calloutView.postedByLabel.text = broadcastAnnotation.postedBy
-            calloutView.postTime.text = broadcastAnnotation.postTime
+            calloutView.postedByLabel.text = " Posted By \(broadcastAnnotation.postedBy!)"
             calloutView.likesLabel.text = String(broadcastAnnotation.likes)
-            calloutView.flagsLabel.text = String(broadcastAnnotation.flags)
+            calloutView.activityIndicator.startAnimating()
             
             // Create a reference to the file that will be downloaded
             let reference = storage.reference(forURL: broadcastAnnotation.photoPath)
             
             // Download image at path to local memory with defined maximum size
             reference.data(withMaxSize: 10 * 1024 * 1024) { (data:Data?, error:Error?) in
+                
+                calloutView.activityIndicator.stopAnimating()
+                
                 if let error = error {
                     print(error.localizedDescription)
                 }
@@ -245,11 +244,42 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
                 }
             }
             
+            
+            let calloutWidth = UIScreen.main.bounds.width * 0.75
+            calloutView.bounds.size.width = calloutWidth
+            calloutView.bounds.size.height = calloutWidth * 1.3
             calloutView.center = CGPoint(x: view.bounds.size.width / 2, y: -calloutView.bounds.size.height*0.52)
             view.addSubview(calloutView)
-            mapView.setCenter((view.annotation?.coordinate)!, animated: true)
+            
+            let screenHeight = self.view.bounds.size.height + navBar.bounds.height
+            let annotationPointInView = view.convert(CGPoint.zero, to: self.view)
+            
+            print(screenHeight)
+            print(annotationPointInView.y)
+            
+            let yDiff = screenHeight - annotationPointInView.y
+            let xPoint = annotationPointInView.x + 25
+            let yPoint = annotationPointInView.y - yDiff / 2 + 50
+            let point = CGPoint(x: xPoint, y: yPoint)
+            
+            let pointInMap = self.view.convert(point, to: mapView)
+            let coordinate = mapView.convert(pointInMap, toCoordinateFrom: mapView)
             
             
+            mapView.setCenter((coordinate), animated: true)
+            
+            
+            
+        }
+    }
+    
+    func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
+        if view.isKind(of: CustomAnnotationView.self)
+        {
+            for subview in view.subviews
+            {
+                subview.removeFromSuperview()
+            }
         }
     }
 
@@ -583,7 +613,7 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
         if currentUser != nil {
             storeActiveBroadcasts()
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 4.0, execute: {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0, execute: {
                 print("firing timer...")
                 self.map.removeAnnotations(self.map.annotations)
                 

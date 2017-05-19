@@ -20,16 +20,16 @@
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>UILaunchStoryboardName</key>
-	<string>LaunchScreen</string>
-	<key>NSLocationUsageDescription</key>
-	<string>N/A</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Current Location is required to broadcast</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Current Location is required to broadcast</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Photos are required to broadcast</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Current Location is required to broadcast</string>
+	<key>NSLocationUsageDescription</key>
+	<string>N/A</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Current Location is required to broadcast</string>
+	<key>UILaunchStoryboardName</key>
+	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
 	<key>UIRequiredDeviceCapabilities</key>
@@ -39,8 +39,6 @@
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
