@@ -251,19 +251,16 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
             calloutView.center = CGPoint(x: view.bounds.size.width / 2, y: -calloutView.bounds.size.height*0.52)
             view.addSubview(calloutView)
             
-            let screenHeight = mapView.bounds.size.height
-            let annotationPointInView = view.convert(CGPoint.zero, to: mapView)
             
-            print(screenHeight)
-            print(annotationPointInView.y)
+            // Use displayed map region to find a specific point X degrees lattitude above the
+            // annotation view in order to set the map center to this point, offset from the 
+            // annotation
             
-            let yDiff = screenHeight - annotationPointInView.y
-            let xPoint = annotationPointInView.x + 25
-            let yPoint = annotationPointInView.y - yDiff / 2 + 50
-            let point = CGPoint(x: xPoint, y: yPoint)
-            
-            //let pointInMap = self.view.convert(point, to: mapView)
-            let coordinate = mapView.convert(point, toCoordinateFrom: mapView)
+            let currentLatDelta = mapView.region.span.latitudeDelta
+            let currentMapCenter = mapView.region.center
+            let newCenterLatRef = currentMapCenter.latitude + (currentLatDelta * 0.25)
+            let diff = newCenterLatRef - currentMapCenter.latitude
+            let coordinate = CLLocationCoordinate2D(latitude: view.annotation!.coordinate.latitude + diff, longitude: view.annotation!.coordinate.longitude)
             
             
             mapView.setCenter((coordinate), animated: true)

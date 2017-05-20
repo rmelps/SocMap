@@ -13,40 +13,43 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="BroadcastCalloutView" customModule="SocialMap" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="313" height="406"/>
+            <rect key="frame" x="0.0" y="0.0" width="313" height="428"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="jTQ-Mk-z5g">
-                    <rect key="frame" x="0.0" y="46.5" width="313" height="313"/>
+                    <rect key="frame" x="0.0" y="57.5" width="313" height="313"/>
                     <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="jTQ-Mk-z5g" secondAttribute="height" multiplier="1:1" id="XhF-RK-2eQ"/>
                     </constraints>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Posted By:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rUS-ZB-5Gc">
-                    <rect key="frame" x="116.5" y="11" width="80" height="27.5"/>
+                    <rect key="frame" x="116.5" y="22" width="80" height="27.5"/>
                     <fontDescription key="fontDescription" name="Noteworthy-Bold" family="Noteworthy" pointSize="17"/>
                     <color key="textColor" red="0.37570501179999999" green="0.66657312369999999" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="ocl-bk-LAw">
-                    <rect key="frame" x="138" y="184.5" width="37" height="37"/>
+                    <rect key="frame" x="138" y="195.5" width="37" height="37"/>
                 </activityIndicatorView>
                 <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="WGw-fD-SYP">
-                    <rect key="frame" x="8" y="367.5" width="297" height="30.5"/>
+                    <rect key="frame" x="8" y="370.5" width="297" height="57.5"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pEy-mc-02L">
-                            <rect key="frame" x="0.0" y="0.0" width="32" height="30.5"/>
+                        <button opaque="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="252" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pEy-mc-02L">
+                            <rect key="frame" x="0.0" y="0.0" width="45" height="57.5"/>
+                            <constraints>
+                                <constraint firstAttribute="width" secondItem="pEy-mc-02L" secondAttribute="height" multiplier="32:41" id="QEc-Ud-C6X"/>
+                            </constraints>
                             <state key="normal" image="NotLiked"/>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="3" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="T14-Eg-jWm">
-                            <rect key="frame" x="42" y="0.0" width="215" height="30.5"/>
+                            <rect key="frame" x="55" y="0.0" width="202" height="57.5"/>
                             <fontDescription key="fontDescription" name="Noteworthy-Light" family="Noteworthy" pointSize="17"/>
                             <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pDy-Xx-1CI">
-                            <rect key="frame" x="267" y="0.0" width="30" height="30.5"/>
+                            <rect key="frame" x="267" y="0.0" width="30" height="57.5"/>
                             <state key="normal" title="Flag"/>
                         </button>
                     </subviews>
@@ -60,12 +63,12 @@
                 <constraint firstItem="jTQ-Mk-z5g" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="HHR-5N-N8Q"/>
                 <constraint firstItem="jTQ-Mk-z5g" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="VVh-hJ-iVf"/>
                 <constraint firstItem="rUS-ZB-5Gc" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="WFa-Db-7sb"/>
-                <constraint firstItem="WGw-fD-SYP" firstAttribute="top" secondItem="jTQ-Mk-z5g" secondAttribute="bottom" constant="8" id="ceM-pF-uFR"/>
+                <constraint firstItem="WGw-fD-SYP" firstAttribute="top" secondItem="jTQ-Mk-z5g" secondAttribute="bottom" id="ceM-pF-uFR"/>
                 <constraint firstItem="ocl-bk-LAw" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="fpi-PW-Ocm"/>
                 <constraint firstItem="ocl-bk-LAw" firstAttribute="centerX" secondItem="jTQ-Mk-z5g" secondAttribute="centerX" id="hk7-gL-SXs"/>
                 <constraint firstItem="WGw-fD-SYP" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="pvz-Hp-clY"/>
                 <constraint firstAttribute="trailing" secondItem="jTQ-Mk-z5g" secondAttribute="trailing" id="qwN-Fz-6tV"/>
-                <constraint firstAttribute="bottom" secondItem="WGw-fD-SYP" secondAttribute="bottom" constant="8" id="s5P-sI-IOD"/>
+                <constraint firstAttribute="bottom" secondItem="WGw-fD-SYP" secondAttribute="bottom" id="s5P-sI-IOD"/>
                 <constraint firstAttribute="trailing" secondItem="WGw-fD-SYP" secondAttribute="trailing" constant="8" id="w59-Iv-TJz"/>
                 <constraint firstItem="ocl-bk-LAw" firstAttribute="centerY" secondItem="jTQ-Mk-z5g" secondAttribute="centerY" id="x8X-sU-4Op"/>
             </constraints>
@@ -79,7 +82,7 @@
                 <outlet property="likesLabel" destination="T14-Eg-jWm" id="LiF-Mb-UjA"/>
                 <outlet property="postedByLabel" destination="rUS-ZB-5Gc" id="Cl4-Zd-IgY"/>
             </connections>
-            <point key="canvasLocation" x="26.5" y="-167"/>
+            <point key="canvasLocation" x="26.5" y="-156"/>
         </view>
     </objects>
     <resources>
