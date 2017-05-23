@@ -19,6 +19,7 @@
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="jTQ-Mk-z5g">
                     <rect key="frame" x="0.0" y="57.5" width="313" height="313"/>
                     <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <gestureRecognizers/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="jTQ-Mk-z5g" secondAttribute="height" multiplier="1:1" id="XhF-RK-2eQ"/>
                     </constraints>

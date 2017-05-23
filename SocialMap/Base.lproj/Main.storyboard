@@ -12,10 +12,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Home View Controller-->
+        <!--Home-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="HomeViewController" customModule="SocialMap" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Home" id="BYZ-38-t0r" customClass="HomeViewController" customModule="SocialMap" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -154,6 +154,7 @@
                         <outlet property="signUpButton" destination="Kyu-kv-5va" id="t07-a1-Fy3"/>
                         <outlet property="visualEffectView" destination="JhO-xA-pHg" id="TS6-zm-gIp"/>
                         <segue destination="mYS-dA-VQq" kind="presentation" identifier="showCamera" modalPresentationStyle="fullScreen" modalTransitionStyle="crossDissolve" id="ISG-aQ-1ZI"/>
+                        <segue destination="D88-fi-p5Y" kind="show" identifier="showDetailSegue" id="WXL-Y8-g0f"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -241,7 +242,7 @@
                     </constraints>
                 </view>
             </objects>
-            <point key="canvasLocation" x="33" y="64"/>
+            <point key="canvasLocation" x="33" y="63"/>
         </scene>
         <!--Camera View Controller-->
         <scene sceneID="zRc-GC-Jng">
@@ -360,6 +361,63 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Fwo-M7-FyS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="809" y="63"/>
+        </scene>
+        <!--Detail View Controller-->
+        <scene sceneID="QqP-DC-X3P">
+            <objects>
+                <viewController id="Bc5-MB-gcd" customClass="DetailViewController" customModule="SocialMap" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="oCQ-ju-TT3"/>
+                        <viewControllerLayoutGuide type="bottom" id="zD6-7f-Em0"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="4Bw-4F-Prf">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ioE-2A-vqJ">
+                                <rect key="frame" x="0.0" y="64" width="375" height="375"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="ioE-2A-vqJ" secondAttribute="height" multiplier="1:1" id="552-3T-NFC"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QjG-ft-HdZ">
+                                <rect key="frame" x="16" y="447" width="343" height="28"/>
+                                <fontDescription key="fontDescription" name="Noteworthy-Light" family="Noteworthy" pointSize="17"/>
+                                <color key="textColor" red="0.37570501179999999" green="0.66657312369999999" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="Test" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Dbg-o8-UNk">
+                                <rect key="frame" x="16" y="482.5" width="343" height="164.5"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="textColor" red="0.37570501179999999" green="0.66657312369999999" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" name="Noteworthy-Bold" family="Noteworthy" pointSize="20"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="QjG-ft-HdZ" firstAttribute="leading" secondItem="4Bw-4F-Prf" secondAttribute="leadingMargin" id="2t2-bA-Hq2"/>
+                            <constraint firstItem="Dbg-o8-UNk" firstAttribute="trailing" secondItem="4Bw-4F-Prf" secondAttribute="trailingMargin" id="5cp-JM-uy1"/>
+                            <constraint firstItem="QjG-ft-HdZ" firstAttribute="trailing" secondItem="4Bw-4F-Prf" secondAttribute="trailingMargin" id="8go-1y-zQs"/>
+                            <constraint firstItem="Dbg-o8-UNk" firstAttribute="leading" secondItem="4Bw-4F-Prf" secondAttribute="leadingMargin" id="VaJ-Ih-fNi"/>
+                            <constraint firstItem="zD6-7f-Em0" firstAttribute="top" secondItem="Dbg-o8-UNk" secondAttribute="bottom" constant="20" id="a0p-4T-88W"/>
+                            <constraint firstItem="ioE-2A-vqJ" firstAttribute="leading" secondItem="4Bw-4F-Prf" secondAttribute="leading" id="lrs-p9-NyO"/>
+                            <constraint firstAttribute="trailing" secondItem="ioE-2A-vqJ" secondAttribute="trailing" id="oRc-Bo-i5Z"/>
+                            <constraint firstItem="QjG-ft-HdZ" firstAttribute="top" secondItem="ioE-2A-vqJ" secondAttribute="bottom" constant="8" id="si6-G7-I04"/>
+                            <constraint firstItem="Dbg-o8-UNk" firstAttribute="top" secondItem="QjG-ft-HdZ" secondAttribute="bottom" constant="8" id="stZ-Wm-rdi"/>
+                            <constraint firstItem="ioE-2A-vqJ" firstAttribute="top" secondItem="oCQ-ju-TT3" secondAttribute="bottom" id="ts5-KG-f4J"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="m8X-NV-Yzb"/>
+                    <connections>
+                        <outlet property="image" destination="ioE-2A-vqJ" id="2yr-q3-zlr"/>
+                        <outlet property="textView" destination="Dbg-o8-UNk" id="dig-hr-cwE"/>
+                        <outlet property="timeLabel" destination="QjG-ft-HdZ" id="xaH-VH-XeY"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="nJb-Lc-wgz" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1681" y="-660"/>
         </scene>
         <!--Edit Image View Controller-->
         <scene sceneID="Klq-dK-9H3">
@@ -695,6 +753,31 @@
                 </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="33" y="-897"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="uCu-9o-HVP">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="D88-fi-p5Y" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="BQA-Fu-HTv">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="barTintColor" red="0.37570501179999999" green="0.66657312369999999" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <textAttributes key="titleTextAttributes">
+                            <fontDescription key="fontDescription" name="EuphemiaUCAS-Italic" family="Euphemia UCAS" pointSize="25"/>
+                            <color key="textColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                            <color key="textShadowColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <offsetWrapper key="textShadowOffset" horizontal="0.0" vertical="-2"/>
+                        </textAttributes>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="Bc5-MB-gcd" kind="relationship" relationship="rootViewController" id="r7u-nA-B7n"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="BZ2-iJ-bqo" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="808.79999999999995" y="-659.82008995502258"/>
         </scene>
     </scenes>
     <resources>

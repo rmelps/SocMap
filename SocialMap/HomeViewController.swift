@@ -66,6 +66,10 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
     // Reference to available broadcasts
     var broadcasts = [Broadcast]()
     var annotations = [BroadcastTowerPin]()
+    
+    // Current Callout view
+    var calloutView = BroadcastCalloutView()
+    var pinRef = BroadcastTowerPin()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -220,10 +224,10 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
         
         if let broadcastAnnotation = view.annotation as? BroadcastTowerPin {
             
-            
+            pinRef = broadcastAnnotation
             
             let views = Bundle.main.loadNibNamed("BroadcastCalloutView", owner: nil, options: nil)
-            let calloutView = views?[0] as! BroadcastCalloutView
+            calloutView = views?[0] as! BroadcastCalloutView
             calloutView.postedByLabel.text = " Posted By \(broadcastAnnotation.postedBy!)"
             calloutView.likesLabel.text = String(broadcastAnnotation.likes)
             calloutView.activityIndicator.startAnimating()
@@ -234,13 +238,18 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
             // Download image at path to local memory with defined maximum size
             reference.data(withMaxSize: 10 * 1024 * 1024) { (data:Data?, error:Error?) in
                 
-                calloutView.activityIndicator.stopAnimating()
+                self.calloutView.activityIndicator.stopAnimating()
                 
                 if let error = error {
                     print(error.localizedDescription)
                 }
                 if let data = data {
-                    calloutView.image.image = UIImage(data: data)!
+                    self.calloutView.image.image = UIImage(data: data)!
+                    
+                    
+                    let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(HomeViewController.showImageDetail))
+                    self.calloutView.addGestureRecognizer(tapGestureRecognizer)
+                    
                 }
             }
             
@@ -275,6 +284,7 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
         {
             for subview in view.subviews
             {
+                print("removing")
                 subview.removeFromSuperview()
             }
         }
@@ -328,6 +338,17 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
             }
         case "showCamera":
             print("showing camera")
+        case "showDetailSegue":
+            
+            let destinationNavController = segue.destination as! UINavigationController
+            
+            if let vc = destinationNavController.topViewController as? DetailViewController {
+                let broadcast = broadcasts[pinRef.sourceRef]
+                vc.photo = calloutView.image.image
+                vc.detailText = pinRef.descriptionText
+                vc.time = formatTime(hour: Int(broadcast.uploadTime["hour"]!)!, minute: Int(broadcast.uploadTime["minute"]!)!)
+                vc.title = broadcast.addedByUser
+            }
         default:
             preconditionFailure("Segue Identifier not found")
         }
@@ -619,7 +640,7 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
                 print("firing timer...")
                 self.map.removeAnnotations(self.map.annotations)
                 
-                for broadcast in self.broadcasts {
+                for (index,broadcast) in self.broadcasts.enumerated() {
                     let lattitude = Double(broadcast.coordinate["lattitude"] ?? "0.0")
                     let longitude = Double(broadcast.coordinate["longitude"] ?? "0.0")
                     
@@ -634,6 +655,7 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
                     towerAnnotation.likes = 0
                     towerAnnotation.flags = 0
                     towerAnnotation.descriptionText = broadcast.content
+                    towerAnnotation.sourceRef = index
                     
                     let towerAnnotationView = MKPinAnnotationView(annotation: towerAnnotation, reuseIdentifier: "towerPin")
                     self.map.addAnnotation(towerAnnotationView.annotation!)
@@ -642,6 +664,26 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
         } else {
             map.removeAnnotations(map.annotations)
         }
+    }
+    
+    func showImageDetail() {
+        print("tapped image")
+        self.performSegue(withIdentifier: "showDetailSegue", sender: self)
+        
+    }
+    
+    func formatTime(hour: Int, minute: Int) -> String {
+        var suffix = "AM"
+        var returnHour = Int()
+        
+        if hour > 12 {
+            returnHour = hour - 12
+        }
+        if hour > 11 {
+            suffix = "PM"
+        }
+        
+        return "\(returnHour):\(minute) \(suffix)"
     }
 }
 

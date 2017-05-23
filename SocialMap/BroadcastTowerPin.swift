@@ -17,4 +17,5 @@ class BroadcastTowerPin: MKPointAnnotation {
     var likes: Int!
     var flags: Int!
     var descriptionText: String!
+    var sourceRef: Int!
 }

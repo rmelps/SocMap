@@ -42,6 +42,8 @@ class CreateProfileViewController: UIViewController, UITextFieldDelegate {
                     
                     var signedUser = User(userData: user!, snapShot: snapShot)
                     signedUser.userName = self.userNameTextField.text ?? "\(user!.uid)"
+                    let homeController = UIApplication.shared.keyWindow?.rootViewController as! HomeViewController
+                    homeController.currentUser = signedUser
                     print("Welcome \(signedUser.userName)")
                 })
                 self.signIn()
