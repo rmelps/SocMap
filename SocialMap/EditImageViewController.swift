@@ -103,24 +103,31 @@ class EditImageViewController: UIViewController {
         guard let image = self.capturedImage.image else {
             return nil
         }
+        
 
         let cgImage = image.cgImage
+        var x = CGFloat()
+        var y = CGFloat()
         
         let factor = self.capturedImage.image!.size.height / self.view.frame.height
+        let diff = (self.capturedImage.image!.size.width - (self.capturedImage.bounds.width * factor)) / 2
         
-        let x = (self.editWindow.frame.origin.x - self.capturedImage.frame.origin.x) * factor
-        let y = (self.editWindow.frame.origin.y - self.capturedImage.frame.origin.y) * factor
+        if self.capturedImage.image!.size.width > self.capturedImage.image!.size.height {
+            x = diff
+            y = (self.editWindow.frame.origin.y - self.capturedImage.frame.origin.y) * factor
+        } else {
+            y = diff
+            x = (self.editWindow.frame.origin.y - self.capturedImage.frame.origin.y) * factor
+        }
+        
+        
         let width = self.editWindow.frame.size.width * factor
         let height = self.editWindow.frame.size.height * factor
-        print(x)
-        print(y)
-        print(width)
-        print(height)
         
         
         let scaledCropArea = CGRect(
-            x: y * image.scale,
-            y: x * image.scale,
+            x: x * image.scale,
+            y: y * image.scale,
             width: width * image.scale,
             height: height * image.scale
         )
