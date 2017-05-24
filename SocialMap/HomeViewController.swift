@@ -378,7 +378,7 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
             map.removeAnnotations(map.annotations)
             storeActiveBroadcasts()
             
-            for broadcast in self.broadcasts {
+            for (index, broadcast) in self.broadcasts.enumerated() {
                 let lattitude = Double(broadcast.coordinate["lattitude"] ?? "0.0")
                 let longitude = Double(broadcast.coordinate["longitude"] ?? "0.0")
                 
@@ -393,6 +393,7 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
                 towerAnnotation.likes = 0
                 towerAnnotation.flags = 0
                 towerAnnotation.descriptionText = broadcast.content
+                towerAnnotation.sourceRef = index
                 
                 let towerAnnotationView = MKPinAnnotationView(annotation: towerAnnotation, reuseIdentifier: "towerPin")
                 self.map.addAnnotation(towerAnnotationView.annotation!)
@@ -422,6 +423,8 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
         
         descriptionText.resignFirstResponder()
         sender.isEnabled = false
+        self.descriptionText.isEditable = false
+        self.descriptionText.isSelectable = false
         
         // Time&Date related parameters for finding current date at upload
         let date = Date()
@@ -464,6 +467,8 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
                 self.broadcastImageUploadProgressBar.progress = 0.0
                 self.descriptionText.text = ""
                 sender.isEnabled = true
+                self.descriptionText.isEditable = true
+                self.descriptionText.isSelectable = true
                 self.refreshAnnotationsAsync()
             }
         }
@@ -678,6 +683,8 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
         
         if hour > 12 {
             returnHour = hour - 12
+        } else {
+            returnHour = hour
         }
         if hour > 11 {
             suffix = "PM"

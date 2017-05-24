@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreGraphics
 
 class EditImageViewController: UIViewController {
     
@@ -15,6 +16,19 @@ class EditImageViewController: UIViewController {
     @IBOutlet weak var doneButton: SignInButton!
     var image: UIImage!
     var editWindow: UIView!
+    var cropArea: CGRect {
+        
+        get {
+            let factor = self.capturedImage.image!.size.width / self.view.frame.width;
+            let scale: CGFloat = 1.0
+            let x = (self.editWindow.frame.origin.x - self.capturedImage.frame.origin.x) * scale * factor
+            let y = (self.editWindow.frame.origin.y - self.capturedImage.frame.origin.y) * scale * factor
+            let width = self.editWindow.frame.size.width * scale * factor;
+            let height = self.editWindow.frame.size.height * scale * factor
+            
+            return CGRect(x: x, y: y, width: width, height: height);
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,7 +57,7 @@ class EditImageViewController: UIViewController {
         case "returnToHomeSegue":
             let vc = segue.destination as! HomeViewController
             vc.fromCamera = true
-            vc.broadcastImage.image = createCroppedImage()
+            vc.broadcastImage.image = cropToBounds()
         default:
             break
         }
@@ -84,9 +98,39 @@ class EditImageViewController: UIViewController {
         }
     }
     
-    func createCroppedImage() -> UIImage {
+    func cropToBounds() -> UIImage? {
         
-        return image
+        guard let image = self.capturedImage.image else {
+            return nil
+        }
+
+        let cgImage = image.cgImage
+        
+        let factor = self.capturedImage.image!.size.height / self.view.frame.height
+        
+        let x = (self.editWindow.frame.origin.x - self.capturedImage.frame.origin.x) * factor
+        let y = (self.editWindow.frame.origin.y - self.capturedImage.frame.origin.y) * factor
+        let width = self.editWindow.frame.size.width * factor
+        let height = self.editWindow.frame.size.height * factor
+        print(x)
+        print(y)
+        print(width)
+        print(height)
+        
+        
+        let scaledCropArea = CGRect(
+            x: y * image.scale,
+            y: x * image.scale,
+            width: width * image.scale,
+            height: height * image.scale
+        )
+        
+        let croppedCGImage = cgImage?.cropping(to: scaledCropArea)
+        let croppedImage = UIImage(cgImage: croppedCGImage!, scale: image.scale, orientation: image.imageOrientation)
+        
+        return croppedImage
     }
+    
+    
 
 }

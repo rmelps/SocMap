@@ -91,7 +91,7 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
             })
             if let location = self.locationManager.location?.coordinate {
                 self.map.showsUserLocation = true
-                let span = MKCoordinateSpan(latitudeDelta: 5, longitudeDelta: 5)
+                let span = MKCoordinateSpan(latitudeDelta: 3, longitudeDelta: 3)
                 let region = MKCoordinateRegion(center: location, span: span)
                 self.map.setRegion(region, animated: true)
                 self.map.isUserInteractionEnabled = true

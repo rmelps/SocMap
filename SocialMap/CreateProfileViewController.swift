@@ -74,7 +74,7 @@ class CreateProfileViewController: UIViewController, UITextFieldDelegate {
             self.homeViewController.timer?.invalidate()
             self.homeViewController.map.showsUserLocation = true
             if let location = self.homeViewController.locationManager.location?.coordinate {
-                let span = MKCoordinateSpan(latitudeDelta: 5, longitudeDelta: 5)
+                let span = MKCoordinateSpan(latitudeDelta: 3, longitudeDelta: 3)
                 let region = MKCoordinateRegion(center: location, span: span)
                 self.homeViewController.map.setRegion(region, animated: true)
             }
