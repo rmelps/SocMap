@@ -22,6 +22,8 @@
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>Photos are required to broadcast</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Photo Library Access is required to save captured images</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Current Location is required to broadcast</string>
 	<key>NSLocationUsageDescription</key>
