@@ -15,7 +15,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
     @IBOutlet weak var cancelImageButton: SignInButton!
     @IBOutlet weak var broadcastImageButton: SignInButton!
     @IBOutlet weak var captureImageButton: SignInButton!
-    var downloadPicButton: UIButton!
+    var downloadPicButton: UIButton?
     
     @IBOutlet var cameraView: UIView!
     @IBOutlet var capturedImage: UIImageView!
@@ -34,22 +34,8 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        addDownloadButton()
         
-        let buttonFrame = captureImageButton.frame
-        downloadPicButton = UIButton(frame: buttonFrame)
-        downloadPicButton.setImage(UIImage(named: "Download"), for: .normal)
-        downloadPicButton.addTarget(self, action: #selector(CameraViewController.download(_:)), for: .touchUpInside)
-        downloadPicButton.alpha = 0
-        
-        self.view.addSubview(downloadPicButton)
-        
-        downloadPicButton.translatesAutoresizingMaskIntoConstraints = false
-        
-        let centerConstraint = downloadPicButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
-        let yConstraint = downloadPicButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -60)
-        
-        centerConstraint.isActive = true
-        yConstraint.isActive = true
     }
     
 
@@ -121,7 +107,11 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
         captureImageButton.alpha = 1
         cancelImageButton.alpha = 0
         broadcastImageButton.alpha = 0
-        downloadPicButton.alpha = 0
+        downloadPicButton?.alpha = 0
+        
+        if downloadPicButton == nil {
+            self.addDownloadButton()
+        }
     }
     @IBAction func broadcastImage(_ sender: Any) {
         self.performSegue(withIdentifier: "editImageSegue", sender: self)
@@ -158,7 +148,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
             captureImageButton.alpha = 0
             cancelImageButton.alpha = 1
             broadcastImageButton.alpha = 1
-            downloadPicButton.alpha = 1
+            downloadPicButton?.alpha = 1
             
             print(capturedImage.image ?? "nothing here")
             print("captured image")
@@ -194,7 +184,9 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
     }
     
     func displayDownloadStatus(status: PHAuthorizationStatus, error: Error?) {
-        DispatchQueue.main.async { 
+        DispatchQueue.main.async {
+            
+        var newViews = [UIView]()
     
         let views = Bundle.main.loadNibNamed("SavedPhotoStatusView", owner: nil, options: nil)
         let statusView = views?[0] as! SavedPhotoStatusView
@@ -219,11 +211,18 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
             statusView.icon.image = UIImage(named: "Denied")
             statusView.label.shadowColor = .red
         }
-        
+            
+        let blurView = UIVisualEffectView(frame: statusView.frame)
+        blurView.effect = UIBlurEffect(style: .light)
+        self.view.addSubview(blurView)
+        newViews.append(blurView)
+            
         self.view.addSubview(statusView)
+        newViews.append(statusView)
         
+        blurView.alpha = 0
         statusView.alpha = 0
-        statusView.layer.borderWidth = 2
+        statusView.layer.borderWidth = 0.5
         statusView.layer.borderColor = UIColor.white.cgColor
         statusView.layer.cornerRadius = 4
         
@@ -232,33 +231,64 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
         let size = CGSize(width: width, height: height)
         
         statusView.frame = CGRect(origin: CGPoint.zero, size: size)
+            
+            for view in newViews {
         
-        statusView.translatesAutoresizingMaskIntoConstraints = false
+                view.translatesAutoresizingMaskIntoConstraints = false
         
-        let centerXCon = statusView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
-        let centerYCon = statusView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
-        let leadingCon = statusView.leadingAnchor.constraint(equalTo: self.view.layoutMarginsGuide.leadingAnchor)
-        let trailingCon = statusView.trailingAnchor.constraint(equalTo: self.view.layoutMarginsGuide.trailingAnchor)
-        let heightCon = statusView.heightAnchor.constraint(equalToConstant: self.view.bounds.width / 3)
+                let centerXCon = view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
+                let centerYCon = view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
+                let leadingCon = view.leadingAnchor.constraint(equalTo: self.view.layoutMarginsGuide.leadingAnchor)
+                let trailingCon = view.trailingAnchor.constraint(equalTo: self.view.layoutMarginsGuide.trailingAnchor)
+                let heightCon = view.heightAnchor.constraint(equalToConstant: self.view.bounds.width / 3)
         
-        leadingCon.isActive = true
-        trailingCon.isActive = true
-        centerXCon.isActive = true
-        centerYCon.isActive = true
-        heightCon.isActive = true
+                leadingCon.isActive = true
+                trailingCon.isActive = true
+                centerXCon.isActive = true
+                centerYCon.isActive = true
+                heightCon.isActive = true
+            }
             
         UIView.animate(withDuration: 0.5, delay: 0.0, options: .curveEaseOut, animations: { 
             statusView.alpha = 0.85
+            blurView.alpha = 0.85
         }, completion: { (_) in
             UIView.animate(withDuration: 0.7, delay: 1.0, options: .curveEaseIn, animations: { 
                 statusView.alpha = 0
+                blurView.alpha = 0
+                if status == .authorized, error == nil {
+                    self.downloadPicButton?.alpha = 0
+                }
             }, completion: { (_) in
                 statusView.removeFromSuperview()
+                blurView.removeFromSuperview()
+                if status == .authorized, error == nil {
+                    self.downloadPicButton?.removeFromSuperview()
+                    self.downloadPicButton = nil
+                }
             })
         })
             
         }
         
+    }
+    
+    func addDownloadButton() {
+        let buttonFrame = captureImageButton.frame
+        downloadPicButton = UIButton(frame: buttonFrame)
+        downloadPicButton?.setImage(UIImage(named: "Download"), for: .normal)
+        downloadPicButton?.addTarget(self, action: #selector(CameraViewController.download(_:)), for: .touchUpInside)
+        downloadPicButton?.alpha = 0
+        
+        self.view.addSubview(downloadPicButton!)
+        
+        downloadPicButton?.translatesAutoresizingMaskIntoConstraints = false
+        
+        let centerConstraint = downloadPicButton?.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
+        let yConstraint = downloadPicButton?.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -60)
+        
+        centerConstraint?.isActive = true
+        yConstraint?.isActive = true
     }
         
 }
