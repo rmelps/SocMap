@@ -114,6 +114,10 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
         descriptionText.layer.borderWidth = 3.0
         descriptionText.layer.borderColor = borderColor
         descriptionText.delegate = self
+        
+        // Add button click animation on tap down
+        signInButton.addTarget(self, action: #selector(HomeViewController.onTapDown(_:)), for: .touchDown)
+        signUpButton.addTarget(self, action: #selector(HomeViewController.onTapDown(_:)), for: .touchDown)
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -151,6 +155,7 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
             map.mapType = .satellite
             map.layer.zPosition = -2
             map.isUserInteractionEnabled = false
+            map.isRotateEnabled = false
             self.view.addSubview(map)
             print(map.region.span)
             
@@ -205,12 +210,12 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
     }
     
     func mapViewDidFinishRenderingMap(_ mapView: MKMapView, fullyRendered: Bool) {
+        
         if fullyRendered, initializingMapScroll {
-        print("fully rendered")
-        
+            
         initializingMapScroll = false
+            
         }
-        
     }
     
     func mapViewDidFailLoadingMap(_ mapView: MKMapView, withError error: Error) {
@@ -361,8 +366,20 @@ class HomeViewController: UIViewController, UIPopoverPresentationControllerDeleg
     @IBAction func signInButtonTapped(_ sender: SignInButton) {
         self.performSegue(withIdentifier: "signInSegue", sender: self)
     }
+    
     @IBAction func signUpButtonTapped(_ sender: SignInButton) {
         self.performSegue(withIdentifier: "signUpSegue", sender: self)
+    }
+    
+    func onTapDown(_ sender: UIButton) {
+        
+        let radius = signInButton.frame.width / 2
+        let position = sender.center
+        let pulse = Pulsing(numberOfPulses: 1, radius: radius * 3.0, position: position)
+        pulse.animationDuration = 0.8
+        pulse.backgroundColor = borderColor
+        
+        self.view.layer.insertSublayer(pulse, below: sender.layer)
     }
     
     @IBAction func cameraButtonTapped(_ sender: UIBarButtonItem) {

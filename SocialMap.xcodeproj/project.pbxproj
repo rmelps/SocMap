@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0116C76FB5C57B17146C2BE7 /* Pods_SocialMap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 10ADBC9483A6CE84D3AC4DB0 /* Pods_SocialMap.framework */; };
+		950A5C6A1EDDFA46003A893B /* Pulsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 950A5C691EDDFA46003A893B /* Pulsing.swift */; };
 		954700A51EA6DA0C00F6B5CD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954700A41EA6DA0C00F6B5CD /* AppDelegate.swift */; };
 		954700A71EA6DA0C00F6B5CD /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954700A61EA6DA0C00F6B5CD /* HomeViewController.swift */; };
 		954700AA1EA6DA0C00F6B5CD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 954700A81EA6DA0C00F6B5CD /* Main.storyboard */; };
@@ -33,6 +34,8 @@
 
 /* Begin PBXFileReference section */
 		10ADBC9483A6CE84D3AC4DB0 /* Pods_SocialMap.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SocialMap.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		950A5C671EDDEF06003A893B /* Pulsator.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Pulsator.framework; path = "../../../Library/Developer/Xcode/DerivedData/SocialMap-csngobizzqgauhgtqxeiaprwhcjv/Build/Products/Debug-iphoneos/Pulsator/Pulsator.framework"; sourceTree = "<group>"; };
+		950A5C691EDDFA46003A893B /* Pulsing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pulsing.swift; sourceTree = "<group>"; };
 		954700A11EA6DA0C00F6B5CD /* SocialMap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SocialMap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		954700A41EA6DA0C00F6B5CD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		954700A61EA6DA0C00F6B5CD /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
@@ -102,8 +105,8 @@
 				954700CF1EB0172300F6B5CD /* CreateProfileViewController.swift */,
 				95E7D4391EB65F310066F437 /* CameraViewController.swift */,
 				95D210681ED3A46000F4B5B9 /* DetailViewController.swift */,
-				954700A81EA6DA0C00F6B5CD /* Main.storyboard */,
 				9579794B1EB7F9AE00AF92A5 /* EditImageViewController.swift */,
+				954700A81EA6DA0C00F6B5CD /* Main.storyboard */,
 				954700AB1EA6DA0C00F6B5CD /* Assets.xcassets */,
 				954700AD1EA6DA0C00F6B5CD /* LaunchScreen.storyboard */,
 				954700B61EA6DBC000F6B5CD /* GoogleService-Info.plist */,
@@ -131,6 +134,7 @@
 				95D210661ECBBB2000F4B5B9 /* BroadcastCalloutView.swift */,
 				95D2106A1ED8DE0700F4B5B9 /* SavedPhotoStatusView.xib */,
 				95D2106C1ED8E28300F4B5B9 /* SavedPhotoStatusView.swift */,
+				950A5C691EDDFA46003A893B /* Pulsing.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -138,6 +142,7 @@
 		D5C850D755922468C127BA20 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				950A5C671EDDEF06003A893B /* Pulsator.framework */,
 				10ADBC9483A6CE84D3AC4DB0 /* Pods_SocialMap.framework */,
 			);
 			name = Frameworks;
@@ -289,6 +294,7 @@
 				95D2106D1ED8E28300F4B5B9 /* SavedPhotoStatusView.swift in Sources */,
 				954700A51EA6DA0C00F6B5CD /* AppDelegate.swift in Sources */,
 				954700BB1EA6EECD00F6B5CD /* SignInButton.swift in Sources */,
+				950A5C6A1EDDFA46003A893B /* Pulsing.swift in Sources */,
 				9579794C1EB7F9AE00AF92A5 /* EditImageViewController.swift in Sources */,
 				9579794E1EC7D88200AF92A5 /* BroadcastTowerPin.swift in Sources */,
 				957979501ECA960200AF92A5 /* CustomAnnotationView.swift in Sources */,
